@@ -1,0 +1,294 @@
+{
+  "headline": {
+    "total_entries": 327882,
+    "unique_songs": 29389,
+    "unique_artists": 10061,
+    "year_min": 1958,
+    "year_max": 2021
+  },
+  "peak_distribution": {
+    "labels": [
+      "#1",
+      "Top 10",
+      "11\u201340",
+      "41\u201370",
+      "71\u2013100"
+    ],
+    "values": [
+      1124,
+      3859,
+      8210,
+      8051,
+      8145
+    ]
+  },
+  "no1_debut_position": {
+    "labels": [
+      "1\u201310",
+      "11\u201340",
+      "41\u201370",
+      "71\u2013100"
+    ],
+    "values": [
+      93,
+      98,
+      367,
+      566
+    ],
+    "n_songs": 1124,
+    "avg_debut_position": 63.7
+  },
+  "most_no1_by_artist": [
+    {
+      "artist": "The Beatles",
+      "count": 19
+    },
+    {
+      "artist": "Mariah Carey",
+      "count": 16
+    },
+    {
+      "artist": "Madonna",
+      "count": 12
+    },
+    {
+      "artist": "Michael Jackson",
+      "count": 11
+    },
+    {
+      "artist": "Whitney Houston",
+      "count": 11
+    },
+    {
+      "artist": "The Supremes",
+      "count": 10
+    },
+    {
+      "artist": "Bee Gees",
+      "count": 9
+    },
+    {
+      "artist": "The Rolling Stones",
+      "count": 8
+    },
+    {
+      "artist": "Stevie Wonder",
+      "count": 7
+    },
+    {
+      "artist": "Janet Jackson",
+      "count": 7
+    }
+  ],
+  "most_cumulative_weeks_by_artist": [
+    {
+      "artist": "Taylor Swift",
+      "weeks": 1022
+    },
+    {
+      "artist": "Elton John",
+      "weeks": 889
+    },
+    {
+      "artist": "Madonna",
+      "weeks": 857
+    },
+    {
+      "artist": "Kenny Chesney",
+      "weeks": 758
+    },
+    {
+      "artist": "Drake",
+      "weeks": 746
+    },
+    {
+      "artist": "Tim McGraw",
+      "weeks": 731
+    },
+    {
+      "artist": "Keith Urban",
+      "weeks": 673
+    },
+    {
+      "artist": "Stevie Wonder",
+      "weeks": 659
+    },
+    {
+      "artist": "Rod Stewart",
+      "weeks": 657
+    },
+    {
+      "artist": "Mariah Carey",
+      "weeks": 621
+    }
+  ],
+  "one_hit_wonders": {
+    "one_hit_artists": 6493,
+    "total_artists": 10061,
+    "pct": 64.5
+  },
+  "avg_weeks_on_chart_by_decade": [
+    {
+      "decade": "1950s",
+      "avg_weeks": 8.0,
+      "n_songs": 925
+    },
+    {
+      "decade": "1960s",
+      "avg_weeks": 7.61,
+      "n_songs": 6954
+    },
+    {
+      "decade": "1970s",
+      "avg_weeks": 9.78,
+      "n_songs": 5404
+    },
+    {
+      "decade": "1980s",
+      "avg_weeks": 12.57,
+      "n_songs": 4221
+    },
+    {
+      "decade": "1990s",
+      "avg_weeks": 15.06,
+      "n_songs": 3526
+    },
+    {
+      "decade": "2000s",
+      "avg_weeks": 15.13,
+      "n_songs": 3516
+    },
+    {
+      "decade": "2010s",
+      "avg_weeks": 11.74,
+      "n_songs": 4596
+    },
+    {
+      "decade": "2020s",
+      "avg_weeks": 8.58,
+      "n_songs": 1043
+    }
+  ],
+  "no1_reign_by_decade": [
+    {
+      "decade": "1950s",
+      "unique_no1_songs": 23,
+      "total_no1_weeks": 74,
+      "avg_reign_weeks": 3.22
+    },
+    {
+      "decade": "1960s",
+      "unique_no1_songs": 203,
+      "total_no1_weeks": 522,
+      "avg_reign_weeks": 2.57
+    },
+    {
+      "decade": "1970s",
+      "unique_no1_songs": 253,
+      "total_no1_weeks": 522,
+      "avg_reign_weeks": 2.06
+    },
+    {
+      "decade": "1980s",
+      "unique_no1_songs": 232,
+      "total_no1_weeks": 522,
+      "avg_reign_weeks": 2.25
+    },
+    {
+      "decade": "1990s",
+      "unique_no1_songs": 141,
+      "total_no1_weeks": 521,
+      "avg_reign_weeks": 3.7
+    },
+    {
+      "decade": "2000s",
+      "unique_no1_songs": 130,
+      "total_no1_weeks": 522,
+      "avg_reign_weeks": 4.02
+    },
+    {
+      "decade": "2010s",
+      "unique_no1_songs": 116,
+      "total_no1_weeks": 522,
+      "avg_reign_weeks": 4.5
+    },
+    {
+      "decade": "2020s",
+      "unique_no1_songs": 31,
+      "total_no1_weeks": 74,
+      "avg_reign_weeks": 2.39
+    }
+  ],
+  "most_recurring_songs": [
+    {
+      "song": "Jingle Bell Rock",
+      "artist": "Bobby Helms",
+      "distinct_years": 11,
+      "year_min": 1958,
+      "year_max": 2021
+    },
+    {
+      "song": "Rockin' Around The Christmas Tree",
+      "artist": "Brenda Lee",
+      "distinct_years": 11,
+      "year_min": 1960,
+      "year_max": 2021
+    },
+    {
+      "song": "All I Want For Christmas Is You",
+      "artist": "Mariah Carey",
+      "distinct_years": 11,
+      "year_min": 2000,
+      "year_max": 2021
+    },
+    {
+      "song": "White Christmas",
+      "artist": "Bing Crosby",
+      "distinct_years": 9,
+      "year_min": 1958,
+      "year_max": 2021
+    },
+    {
+      "song": "The Christmas Song (Merry Christmas To You)",
+      "artist": "Nat King Cole",
+      "distinct_years": 9,
+      "year_min": 1960,
+      "year_max": 2021
+    },
+    {
+      "song": "Thriller",
+      "artist": "Michael Jackson",
+      "distinct_years": 7,
+      "year_min": 1984,
+      "year_max": 2020
+    },
+    {
+      "song": "The Little Drummer Boy",
+      "artist": "The Harry Simeone Chorale",
+      "distinct_years": 5,
+      "year_min": 1958,
+      "year_max": 1962
+    },
+    {
+      "song": "Underneath The Tree",
+      "artist": "Kelly Clarkson",
+      "distinct_years": 5,
+      "year_min": 2013,
+      "year_max": 2021
+    },
+    {
+      "song": "Feliz Navidad",
+      "artist": "Jose Feliciano",
+      "distinct_years": 5,
+      "year_min": 2017,
+      "year_max": 2021
+    },
+    {
+      "song": "A Holly Jolly Christmas",
+      "artist": "Burl Ives",
+      "distinct_years": 5,
+      "year_min": 2017,
+      "year_max": 2021
+    }
+  ]
+}
