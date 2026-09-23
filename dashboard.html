@@ -5,14 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Dashboard — Billboard Hot 100</title>
 <meta name="description" content="Interactive dashboard for exploring 63 years of Billboard Hot 100 weekly chart data by year, artist, and chart position." />
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="css/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
+<svg style="display:none" aria-hidden="true">
+  <symbol id="icon-note" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+  </symbol>
+  <symbol id="icon-vinyl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>
+  </symbol>
+  <symbol id="icon-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="9" y="1" width="6" height="12" rx="3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
+  </symbol>
+  <symbol id="icon-headphones" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 18v-6a9 9 0 0 1 18 0v6"/><rect x="17" y="14" width="4" height="7" rx="2"/><rect x="3" y="14" width="4" height="7" rx="2"/>
+  </symbol>
+  <symbol id="icon-guitar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15.5 2.5l2 2"/><path d="M17.5 4.5l-5 5"/><line x1="12.5" y1="9.5" x2="9.3" y2="12.7"/><circle cx="7" cy="14.3" r="2.4"/><circle cx="9.3" cy="18.2" r="4.1"/><circle cx="9.3" cy="18.2" r="1.2" fill="currentColor" stroke="none"/>
+  </symbol>
+  <symbol id="icon-eq" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+    <rect x="3" y="10" width="3" height="11" rx="1"/><rect x="10.5" y="4" width="3" height="17" rx="1"/><rect x="18" y="13" width="3" height="8" rx="1"/>
+  </symbol>
+</svg>
+
 <nav class="site-nav">
   <div class="site-nav__inner">
     <a class="site-nav__brand" href="index.html">
+      <svg class="icon nav-icon" aria-hidden="true"><use href="#icon-vinyl"/></svg>
       <span class="badge">#1</span> Billboard Hot 100 Report
     </a>
     <div class="site-nav__links">
@@ -25,7 +48,7 @@
 <main class="page">
 
   <div class="dash-header">
-    <h1>Explore the chart yourself</h1>
+    <h1 class="section-heading"><svg class="icon icon-inline" aria-hidden="true"><use href="#icon-headphones"/></svg>Explore the chart yourself</h1>
     <p>
       Filter 327,882 weekly Billboard Hot 100 entries (1958–2021) by year, artist, chart position,
       and chart longevity. Every number, chart, and table row below recalculates from your filters
@@ -71,27 +94,39 @@
 
   <section class="summary-strip" aria-label="Summary numbers for current filters">
     <div class="stat-tile">
-      <div class="stat-tile__value" id="sum-entries">—</div>
-      <div class="stat-tile__label">Chart entries</div>
+      <div class="stat-tile__icon"><svg class="icon" aria-hidden="true"><use href="#icon-eq"/></svg></div>
+      <div class="stat-tile__text">
+        <div class="stat-tile__value" id="sum-entries">—</div>
+        <div class="stat-tile__label">Chart entries</div>
+      </div>
     </div>
     <div class="stat-tile">
-      <div class="stat-tile__value" id="sum-songs">—</div>
-      <div class="stat-tile__label">Distinct songs</div>
+      <div class="stat-tile__icon"><svg class="icon" aria-hidden="true"><use href="#icon-note"/></svg></div>
+      <div class="stat-tile__text">
+        <div class="stat-tile__value" id="sum-songs">—</div>
+        <div class="stat-tile__label">Distinct songs</div>
+      </div>
     </div>
     <div class="stat-tile">
-      <div class="stat-tile__value" id="sum-artists">—</div>
-      <div class="stat-tile__label">Distinct artists</div>
+      <div class="stat-tile__icon"><svg class="icon" aria-hidden="true"><use href="#icon-mic"/></svg></div>
+      <div class="stat-tile__text">
+        <div class="stat-tile__value" id="sum-artists">—</div>
+        <div class="stat-tile__label">Distinct artists</div>
+      </div>
     </div>
     <div class="stat-tile">
-      <div class="stat-tile__value" id="sum-avg-weeks">—</div>
-      <div class="stat-tile__label">Avg. weeks on chart</div>
+      <div class="stat-tile__icon"><svg class="icon" aria-hidden="true"><use href="#icon-headphones"/></svg></div>
+      <div class="stat-tile__text">
+        <div class="stat-tile__value" id="sum-avg-weeks">—</div>
+        <div class="stat-tile__label">Avg. weeks on chart</div>
+      </div>
     </div>
   </section>
 
   <section class="chart-grid" aria-label="Charts">
     <div class="chart-card" data-chart-card="1">
       <div class="chart-card__head">
-        <h2 class="chart-card__title">Chart entries over time</h2>
+        <h2 class="chart-card__title"><svg class="icon icon-inline" aria-hidden="true"><use href="#icon-note"/></svg>Chart entries over time</h2>
         <div class="chart-card__switches">
           <select class="measure-select" aria-label="Measure"></select>
           <select class="breakdown-select" aria-label="Break down by"></select>
@@ -102,7 +137,7 @@
 
     <div class="chart-card" data-chart-card="2">
       <div class="chart-card__head">
-        <h2 class="chart-card__title">By chart position</h2>
+        <h2 class="chart-card__title"><svg class="icon icon-inline" aria-hidden="true"><use href="#icon-eq"/></svg>By chart position</h2>
         <div class="chart-card__switches">
           <select class="measure-select" aria-label="Measure"></select>
           <select class="breakdown-select" aria-label="Break down by"></select>
@@ -113,7 +148,7 @@
 
     <div class="chart-card" data-chart-card="3">
       <div class="chart-card__head">
-        <h2 class="chart-card__title">By artist</h2>
+        <h2 class="chart-card__title"><svg class="icon icon-inline" aria-hidden="true"><use href="#icon-mic"/></svg>By artist</h2>
         <div class="chart-card__switches">
           <select class="measure-select" aria-label="Measure"></select>
           <select class="breakdown-select" aria-label="Break down by"></select>
@@ -124,7 +159,7 @@
 
     <div class="chart-card" data-chart-card="4">
       <div class="chart-card__head">
-        <h2 class="chart-card__title">By decade</h2>
+        <h2 class="chart-card__title"><svg class="icon icon-inline" aria-hidden="true"><use href="#icon-vinyl"/></svg>By decade</h2>
         <div class="chart-card__switches">
           <select class="measure-select" aria-label="Measure"></select>
           <select class="breakdown-select" aria-label="Break down by"></select>
@@ -136,7 +171,7 @@
 
   <section class="table-card" aria-label="Filtered data table">
     <div class="table-card__head">
-      <h2>Chart entries behind this view</h2>
+      <h2 class="section-heading"><svg class="icon icon-inline" aria-hidden="true"><use href="#icon-guitar"/></svg>Chart entries behind this view</h2>
       <span class="table-card__note" id="table-note"></span>
     </div>
     <div class="table-wrap">
@@ -160,7 +195,7 @@
 </main>
 
 <footer class="site-footer">
-  Billboard Hot 100 weekly chart data, 1958–2021 · Built with Claude Code for a Financial Data
+  <svg class="icon" aria-hidden="true"><use href="#icon-note"/></svg>Billboard Hot 100 weekly chart data, 1958–2021 · Built with Claude Code for a Financial Data
   Analytics course project · <a href="https://github.com/rfordatascience/tidytuesday" target="_blank" rel="noopener">Data source</a>
 </footer>
 

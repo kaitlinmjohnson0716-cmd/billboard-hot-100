@@ -220,7 +220,7 @@
     if (!indices.length) {
       const empty = document.createElement("div");
       empty.className = "empty-state";
-      empty.textContent = "No data for these filters.";
+      empty.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#icon-mic"/></svg><br>No data for these filters.';
       body.appendChild(empty);
       return;
     }
@@ -289,7 +289,7 @@
       wrap.querySelector(".empty-state")?.remove();
       const empty = document.createElement("div");
       empty.className = "empty-state";
-      empty.textContent = "No chart entries match these filters. Try widening the year range or clearing the artist filter.";
+      empty.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#icon-vinyl"/></svg><br>No chart entries match these filters. Try widening the year range or clearing the artist filter.';
       wrap.appendChild(empty);
       return;
     }
