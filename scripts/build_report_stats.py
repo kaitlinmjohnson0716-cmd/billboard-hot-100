@@ -113,10 +113,30 @@ def main():
 
     # --- 5. one-hit wonders vs repeat hitmakers ---
     n_one_hit = sum(1 for s in songs_by_artist.values() if len(s) == 1)
+
+    def song_count_bucket(n):
+        if n == 1:
+            return "1 song"
+        if n == 2:
+            return "2 songs"
+        if n == 3:
+            return "3 songs"
+        if n <= 5:
+            return "4–5 songs"
+        if n <= 10:
+            return "6–10 songs"
+        return "11+ songs"
+
+    bucket_order = ["1 song", "2 songs", "3 songs", "4–5 songs", "6–10 songs", "11+ songs"]
+    bucket_counts = Counter(song_count_bucket(len(s)) for s in songs_by_artist.values())
     stats["one_hit_wonders"] = {
         "one_hit_artists": n_one_hit,
         "total_artists": len(songs_by_artist),
         "pct": round(n_one_hit / len(songs_by_artist) * 100, 1),
+        "distribution": {
+            "labels": bucket_order,
+            "values": [bucket_counts[b] for b in bucket_order],
+        },
     }
 
     # --- 6. avg weeks on chart per song, by decade ---

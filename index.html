@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Six Decades on the Hot 100 — Billboard Chart Report</title>
+<meta name="description" content="A data report on 63 years of the Billboard Hot 100 weekly singles chart: who dominates, how long hits last, and how the chart itself has changed." />
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav__inner">
+    <a class="site-nav__brand" href="index.html">
+      <span class="badge">#1</span> Billboard Hot 100 Report
+    </a>
+    <div class="site-nav__links">
+      <a href="index.html" aria-current="page">Report</a>
+      <a href="dashboard.html">Dashboard</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero__inner">
+    <p class="hero__kicker">Financial Data Analytics — Data Website Project</p>
+    <h1>Six decades on the Hot 100: who dominates the chart, and how long a hit really lasts</h1>
+    <p class="hero__byline">By Kaitlin Johnson</p>
+    <p class="hero__summary">
+      This report looks at every weekly Billboard Hot 100 chart position from August 1958 through
+      May 2021 — 327,882 chart appearances by 29,389 songs and 10,061 artists. It asks three
+      questions: which artists and songs have dominated the chart, how long songs typically stay
+      on it, and whether the chart itself behaves differently now than it did in the 1960s. The
+      short version: a small number of artists account for a huge share of chart weeks, most
+      songs that ever reach #1 debut nowhere near the top, and #1 songs now hold the top spot
+      roughly twice as long as they did in the 1970s.
+    </p>
+  </div>
+</header>
+
+<main class="page">
+
+  <section class="stat-strip" id="headline-stats" aria-label="Headline numbers">
+    <div class="stat-tile">
+      <div class="stat-tile__value" id="stat-total-entries">—</div>
+      <div class="stat-tile__label">Weekly chart appearances</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-tile__value" id="stat-unique-songs">—</div>
+      <div class="stat-tile__label">Distinct songs charted</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-tile__value" id="stat-unique-artists">—</div>
+      <div class="stat-tile__label">Distinct artists charted</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-tile__value" id="stat-year-range">—</div>
+      <div class="stat-tile__label">Years of chart history covered</div>
+    </div>
+  </section>
+
+  <section class="section-list" aria-label="Findings">
+
+    <article class="finding">
+      <div>
+        <div class="finding__rank">1</div>
+        <h2>Most songs that ever chart never crack the Top 10</h2>
+        <p>
+          Of the 29,389 distinct songs that have appeared on the Hot 100, only 1,124 (3.8%) ever
+          reached #1, and just 3,859 more (13.1%) made it into the Top 10. The largest single
+          group — 8,210 songs — peaked between #11 and #40. Charting at all is already a narrow
+          filter; charting near the top is far narrower.
+        </p>
+        <p>
+          Buckets are built from each song's best (lowest) <code>peak_position</code> across every
+          week it charted.
+        </p>
+      </div>
+      <div class="finding__chart">
+        <p class="finding__chart-title">Songs by best chart position ever reached</p>
+        <canvas id="chart-peak-distribution" role="img" aria-label="Bar chart of songs by peak chart position reached"></canvas>
+      </div>
+    </article>
+
+    <article class="finding">
+      <div>
+        <div class="finding__rank">2</div>
+        <h2>Most eventual #1 hits don't debut anywhere near the top</h2>
+        <p>
+          Among the 1,124 songs that eventually reached #1, the average debut position was
+          #64 — deep in the bottom half of the chart. Half of them (566) first appeared between
+          #71 and #100, and only 93 debuted in the Top 10. Chart-toppers are almost always songs
+          that climbed over several weeks, not songs that entered as instant hits.
+        </p>
+        <p>Debut position is each song's <code>week_position</code> on its first charting week.</p>
+      </div>
+      <div class="finding__chart">
+        <p class="finding__chart-title">Debut position of eventual #1 hits (n=1,124)</p>
+        <canvas id="chart-debut-position" role="img" aria-label="Bar chart of debut chart position for songs that eventually reached number one"></canvas>
+      </div>
+    </article>
+
+    <article class="finding">
+      <div>
+        <div class="finding__rank">3</div>
+        <h2>The Beatles and Mariah Carey have the most #1 hits of any act</h2>
+        <p>
+          The Beatles lead all artists with 19 different songs that reached #1, followed by
+          Mariah Carey with 16 and Madonna with 12. Only ten acts in chart history have reached
+          #1 with seven or more distinct songs — reaching the top even once is rare enough that
+          reaching it repeatedly marks a handful of genuinely dominant careers.
+        </p>
+        <p>Counts unique songs per artist whose <code>peak_position</code> equals 1.</p>
+      </div>
+      <div class="finding__chart">
+        <p class="finding__chart-title">Most #1 songs, by artist (top 10)</p>
+        <canvas id="chart-no1-by-artist" role="img" aria-label="Horizontal bar chart of artists ranked by number of songs that reached number one"></canvas>
+      </div>
+    </article>
+
+    <article class="finding">
+      <div>
+        <div class="finding__rank">4</div>
+        <h2>Taylor Swift has spent more cumulative time on the Hot 100 than anyone</h2>
+        <p>
+          Counting every song-week an artist has spent anywhere on the chart, Taylor Swift leads
+          with 1,022 cumulative chart-weeks, ahead of Elton John (889) and Madonna (857). This
+          measures sustained chart presence across an entire catalog rather than any single hit —
+          a different kind of dominance than the #1 count above.
+        </p>
+        <p>Sum of chart-weeks (one row = one artist-song-week) grouped by <code>performer</code>.</p>
+      </div>
+      <div class="finding__chart">
+        <p class="finding__chart-title">Most cumulative weeks on the chart, by artist (top 10)</p>
+        <canvas id="chart-weeks-by-artist" role="img" aria-label="Horizontal bar chart of artists ranked by cumulative weeks spent on the chart"></canvas>
+      </div>
+    </article>
+
+    <article class="finding">
+      <div>
+        <div class="finding__rank">5</div>
+        <h2>Nearly two-thirds of charting artists only ever charted once</h2>
+        <p>
+          6,493 of the 10,061 artists who ever appeared on the Hot 100 — 64.5% — did so with
+          exactly one song and never returned. Only 542 artists (5.4%) charted with 11 or more
+          different songs. The chart's history is built mostly from one-time appearances, with
+          a small core of repeat hitmakers.
+        </p>
+        <p>Buckets count distinct songs per artist across all 63 years.</p>
+      </div>
+      <div class="finding__chart">
+        <p class="finding__chart-title">Artists by number of distinct songs charted</p>
+        <canvas id="chart-one-hit" role="img" aria-label="Bar chart of artists bucketed by number of distinct charting songs"></canvas>
+      </div>
+    </article>
+
+    <article class="finding">
+      <div>
+        <div class="finding__rank">6</div>
+        <h2>Songs stick around longer now than they did in the 1960s — up to a point</h2>
+        <p>
+          The average total weeks a song spends on the chart rose steadily from 7.6 weeks in the
+          1960s to a peak of 15.1 weeks in the 2000s, before falling back to 11.7 in the 2010s.
+          The 2020s figure (8.6 weeks) only reflects songs charting through May 2021, so it likely
+          understates songs whose runs weren't finished yet when this data was collected.
+        </p>
+        <p>Average of each song's maximum <code>weeks_on_chart</code>, grouped by the decade(s) it charted in.</p>
+      </div>
+      <div class="finding__chart">
+        <p class="finding__chart-title">Average weeks on chart per song, by decade</p>
+        <canvas id="chart-weeks-by-decade" role="img" aria-label="Line chart of average weeks on chart per song by decade"></canvas>
+      </div>
+    </article>
+
+    <article class="finding">
+      <div>
+        <div class="finding__rank">7</div>
+        <h2>#1 songs now hold the top spot almost twice as long as they did in the 1970s</h2>
+        <p>
+          The average reign at #1 bottomed out at 2.06 weeks in the 1970s and has climbed almost
+          every decade since, reaching 4.50 weeks in the 2010s — more than double. Every decade
+          from the 1960s on has roughly the same total number of #1 weeks available (about 520,
+          since there's exactly one #1 slot per week), so a longer average reign directly means
+          fewer different songs get to be #1 in a given decade.
+        </p>
+        <p>Average reign = total weeks any song spent at <code>week_position</code> 1 in a decade, divided by the number of distinct songs that reached #1 that decade.</p>
+      </div>
+      <div class="finding__chart">
+        <p class="finding__chart-title">Average #1 reign length, by decade</p>
+        <canvas id="chart-reign-by-decade" role="img" aria-label="Line chart of average number one reign length in weeks by decade"></canvas>
+      </div>
+    </article>
+
+    <article class="finding">
+      <div>
+        <div class="finding__rank">8</div>
+        <h2>A handful of holiday songs are chart perennials</h2>
+        <p>
+          "Jingle Bell Rock" (Bobby Helms) and "Rockin' Around the Christmas Tree" (Brenda Lee)
+          have each charted in 11 different years between 1958/1960 and 2021 — more than any other
+          song, including songs released decades apart. Mariah Carey's "All I Want for Christmas
+          Is You" has matched that with 11 years despite only being released in 1994, entering the
+          Hot 100 nearly every December since Billboard changed its rules on streaming and airplay
+          in the mid-2010s.
+        </p>
+        <p>Counts distinct calendar years each song appears in at any chart position.</p>
+      </div>
+      <div class="finding__chart">
+        <p class="finding__chart-title">Songs charting across the most distinct years (top 10)</p>
+        <canvas id="chart-recurring" role="img" aria-label="Horizontal bar chart of songs ranked by number of distinct years charted"></canvas>
+      </div>
+    </article>
+
+  </section>
+
+  <section class="methodology" aria-label="About the data">
+    <h2>About this data</h2>
+    <dl>
+      <dt>Source</dt>
+      <dd>
+        Weekly Billboard Hot 100 chart positions compiled by the
+        <a href="https://github.com/rfordatascience/tidytuesday/tree/main/data/2021/2021-09-14" target="_blank" rel="noopener">TidyTuesday project</a>,
+        originally scraped from billboard.com and shared via Data.World by Sean Miller.
+        Covers every weekly chart from 1958-08-04 through 2021-05-29.
+      </dd>
+      <dt>One row is</dt>
+      <dd>One song, on one artist's chart entry, in one week — its rank that week, its rank the
+        previous week, its all-time-best rank so far, and how many weeks it had charted total.</dd>
+      <dt>Rows dropped</dt>
+      <dd>
+        13 rows out of 327,895 were dropped: cases where Billboard tracked two simultaneous chart
+        "instances" of the same song/artist in the same week (for example, The Righteous Brothers'
+        "Unchained Melody" had both its 1965 and 1990 re-entry runs active in the same week in
+        late 1990). For each duplicate week/song pair, only the entry with the better chart
+        position was kept, since that's the position Billboard published for that week. No other
+        rows were removed.
+      </dd>
+      <dt>Derived fields</dt>
+      <dd>
+        <code>date</code> (ISO format) and <code>decade</code> were derived from the original
+        <code>week_id</code> date. <code>previous_week_position</code> is blank for a song's debut
+        week, which is expected (there is no previous week) and was left as-is rather than dropped
+        or filled in.
+      </dd>
+      <dt>How numbers are computed</dt>
+      <dd>
+        Every number and chart on this page is generated by
+        <code>scripts/build_report_stats.py</code>, which reads the cleaned data
+        (<code>data/billboard.csv</code>) and writes <code>data/report_stats.json</code>. This page
+        only renders that file — re-running the script against the same data reproduces the same
+        numbers. "Cumulative weeks on chart" sums one row per artist-song-week. "Average weeks on
+        chart per song" uses each song's maximum recorded <code>weeks_on_chart</code>. "#1 reign
+        length" divides total #1 weeks in a decade by the count of distinct songs that reached #1
+        that decade.
+      </dd>
+    </dl>
+    <p style="margin-top:16px;">
+      Want to slice this data yourself — by year, artist, or chart position — instead of reading
+      fixed findings? Use the <a href="dashboard.html">interactive dashboard</a>.
+    </p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  Billboard Hot 100 weekly chart data, 1958–2021 · Built with Claude Code for a Financial Data
+  Analytics course project · <a href="https://github.com/rfordatascience/tidytuesday" target="_blank" rel="noopener">Data source</a>
+</footer>
+
+<script src="js/charts.js"></script>
+<script src="js/report.js"></script>
+</body>
+</html>

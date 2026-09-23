@@ -125,7 +125,25 @@
   "one_hit_wonders": {
     "one_hit_artists": 6493,
     "total_artists": 10061,
-    "pct": 64.5
+    "pct": 64.5,
+    "distribution": {
+      "labels": [
+        "1 song",
+        "2 songs",
+        "3 songs",
+        "4\u20135 songs",
+        "6\u201310 songs",
+        "11+ songs"
+      ],
+      "values": [
+        6493,
+        1234,
+        614,
+        572,
+        606,
+        542
+      ]
+    }
   },
   "avg_weeks_on_chart_by_decade": [
     {
