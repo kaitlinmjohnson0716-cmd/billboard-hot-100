@@ -341,7 +341,7 @@ a {
   border: 1px solid var(--gridline);
   border-radius: var(--radius);
   padding: 16px 16px 8px;
-  min-height: 260px;
+  height: 300px;
   display: flex;
   flex-direction: column;
 }
@@ -353,10 +353,20 @@ a {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin: 0 0 8px;
+  flex: 0 0 auto;
+}
+
+.finding__chart-canvas-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
 }
 
 .finding__chart canvas {
-  flex: 1;
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 @media (max-width: 820px) {
