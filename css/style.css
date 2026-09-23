@@ -186,6 +186,16 @@ a {
   padding: 0 20px;
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 36px;
+  flex-wrap: wrap;
+}
+
+.hero__text {
+  flex: 1 1 420px;
+  min-width: 280px;
 }
 
 .hero__kicker {
@@ -215,6 +225,108 @@ a {
   font-size: 17px;
   max-width: 68ch;
   margin: 0;
+}
+
+/* ---------------- Hero interactive graphic (equalizer) ---------------- */
+.hero__viz {
+  flex: 0 0 300px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 20px 20px 16px;
+  backdrop-filter: blur(3px);
+}
+
+.hero__viz-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0 0 4px;
+}
+
+.hero__viz-hint {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  margin: 0 0 16px;
+}
+
+.hero__viz-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  height: 130px;
+}
+
+.hero__viz-bar {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+}
+
+.hero__viz-bar-fill {
+  width: 100%;
+  height: var(--h);
+  min-height: 4px;
+  background: linear-gradient(180deg, var(--series-2) 0%, var(--series-1) 100%);
+  border-radius: 3px 3px 0 0;
+  transform-origin: bottom center;
+  animation: viz-pulse 2.6s ease-in-out infinite;
+  animation-delay: var(--delay);
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.hero__viz-bar:hover .hero__viz-bar-fill,
+.hero__viz-bar:focus-visible .hero__viz-bar-fill {
+  filter: brightness(1.35);
+  animation-play-state: paused;
+  transform: scaleY(1.04);
+}
+
+.hero__viz-bar-label {
+  margin-top: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.hero__viz-bar:hover .hero__viz-bar-label,
+.hero__viz-bar:focus-visible .hero__viz-bar-label {
+  color: #fff;
+}
+
+@keyframes viz-pulse {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.86); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__viz-bar-fill {
+    animation: none;
+  }
+}
+
+.hero__viz-readout {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 13px;
+  color: #fff;
+  min-height: 18px;
+}
+
+.hero__viz-readout .num {
+  color: var(--series-2);
+  font-weight: 700;
 }
 
 /* ---------------- Headline stat strip ---------------- */
@@ -378,6 +490,9 @@ a {
   }
   .hero__deco {
     display: none;
+  }
+  .hero__viz {
+    flex-basis: 100%;
   }
 }
 

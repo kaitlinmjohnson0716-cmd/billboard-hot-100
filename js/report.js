@@ -9,6 +9,44 @@
   document.getElementById("stat-year-range").textContent =
     `${stats.headline.year_min}–${stats.headline.year_max}`;
 
+  // --- hero interactive graphic: avg weeks on chart per song, by decade ---
+  (function renderHeroViz() {
+    const decades = stats.avg_weeks_on_chart_by_decade;
+    const barsEl = document.getElementById("hero-viz-bars");
+    const readoutEl = document.getElementById("hero-viz-readout");
+    const defaultReadout = readoutEl.textContent;
+    const maxVal = Math.max(...decades.map((d) => d.avg_weeks));
+
+    decades.forEach((d, i) => {
+      const bar = document.createElement("button");
+      bar.type = "button";
+      bar.className = "hero__viz-bar";
+      bar.style.setProperty("--delay", `${i * 0.15}s`);
+
+      const fill = document.createElement("span");
+      fill.className = "hero__viz-bar-fill";
+      fill.style.setProperty("--h", `${Math.max((d.avg_weeks / maxVal) * 100, 3)}%`);
+
+      const label = document.createElement("span");
+      label.className = "hero__viz-bar-label";
+      label.textContent = d.decade.replace("s", "'s");
+
+      bar.appendChild(fill);
+      bar.appendChild(label);
+
+      const show = () => {
+        readoutEl.innerHTML = "";
+        readoutEl.append(`${d.decade}: `, Object.assign(document.createElement("span"), { className: "num", textContent: `${d.avg_weeks} avg weeks` }), ` on chart (${fmtNumber(d.n_songs)} songs)`);
+      };
+      bar.addEventListener("mouseenter", show);
+      bar.addEventListener("focus", show);
+      bar.addEventListener("mouseleave", () => { readoutEl.textContent = defaultReadout; });
+      bar.addEventListener("blur", () => { readoutEl.textContent = defaultReadout; });
+
+      barsEl.appendChild(bar);
+    });
+  })();
+
   // 1. peak position distribution
   makeBarChart(document.getElementById("chart-peak-distribution"), {
     labels: stats.peak_distribution.labels,

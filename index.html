@@ -55,18 +55,26 @@
     <svg class="icon" style="top:10%; right:46%; width:28px; height:28px; color:rgba(235,104,52,0.2);"><use href="#icon-eq"/></svg>
   </div>
   <div class="hero__inner">
-    <p class="hero__kicker">Financial Data Analytics — Data Website Project</p>
-    <h1>Six decades on the Hot 100: who dominates the chart, and how long a hit really lasts</h1>
-    <p class="hero__byline">By Kaitlin Johnson</p>
-    <p class="hero__summary">
-      This report looks at every weekly Billboard Hot 100 chart position from August 1958 through
-      May 2021 — 327,882 chart appearances by 29,389 songs and 10,061 artists. It asks three
-      questions: which artists and songs have dominated the chart, how long songs typically stay
-      on it, and whether the chart itself behaves differently now than it did in the 1960s. The
-      short version: a small number of artists account for a huge share of chart weeks, most
-      songs that ever reach #1 debut nowhere near the top, and #1 songs now hold the top spot
-      roughly twice as long as they did in the 1970s.
-    </p>
+    <div class="hero__text">
+      <p class="hero__kicker">Financial Data Analytics — Data Website Project</p>
+      <h1>Six decades on the Hot 100: who dominates the chart, and how long a hit really lasts</h1>
+      <p class="hero__byline">By Kaitlin Johnson</p>
+      <p class="hero__summary">
+        This report looks at every weekly Billboard Hot 100 chart position from August 1958 through
+        May 2021 — 327,882 chart appearances by 29,389 songs and 10,061 artists. It asks three
+        questions: which artists and songs have dominated the chart, how long songs typically stay
+        on it, and whether the chart itself behaves differently now than it did in the 1960s. The
+        short version: a small number of artists account for a huge share of chart weeks, most
+        songs that ever reach #1 debut nowhere near the top, and #1 songs now hold the top spot
+        roughly twice as long as they did in the 1970s.
+      </p>
+    </div>
+    <div class="hero__viz" role="img" aria-label="Interactive chart: average weeks a song spends on the Hot 100, by decade. Values range from about 7.6 weeks in the 1960s up to 15.1 weeks in the 2000s.">
+      <p class="hero__viz-title">Avg. weeks on chart, by decade</p>
+      <p class="hero__viz-hint">Hover or tap a bar</p>
+      <div class="hero__viz-bars" id="hero-viz-bars" aria-hidden="true"></div>
+      <p class="hero__viz-readout" id="hero-viz-readout" aria-hidden="true">63 years of chart history, one bar per decade</p>
+    </div>
   </div>
 </header>
 
