@@ -24,7 +24,7 @@
   });
 
   // 3. most #1 songs by artist
-  const no1 = stats.most_no1_by_artist.slice().reverse();
+  const no1 = stats.most_no1_by_artist;
   makeBarChart(document.getElementById("chart-no1-by-artist"), {
     labels: no1.map((d) => d.artist),
     values: no1.map((d) => d.count),
@@ -33,7 +33,7 @@
   });
 
   // 4. most cumulative weeks by artist
-  const weeks = stats.most_cumulative_weeks_by_artist.slice().reverse();
+  const weeks = stats.most_cumulative_weeks_by_artist;
   makeBarChart(document.getElementById("chart-weeks-by-artist"), {
     labels: weeks.map((d) => d.artist),
     values: weeks.map((d) => d.weeks),
@@ -74,7 +74,7 @@
   });
 
   // 8. most recurring songs
-  const recurring = stats.most_recurring_songs.slice().reverse();
+  const recurring = stats.most_recurring_songs;
   makeBarChart(document.getElementById("chart-recurring"), {
     labels: recurring.map((d) => d.song),
     fullLabels: recurring.map((d) => `${d.song} — ${d.artist}`),

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard — Billboard Hot 100</title>
+<meta name="description" content="Interactive dashboard for exploring 63 years of Billboard Hot 100 weekly chart data by year, artist, and chart position." />
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav__inner">
+    <a class="site-nav__brand" href="index.html">
+      <span class="badge">#1</span> Billboard Hot 100 Report
+    </a>
+    <div class="site-nav__links">
+      <a href="index.html">Report</a>
+      <a href="dashboard.html" aria-current="page">Dashboard</a>
+    </div>
+  </div>
+</nav>
+
+<main class="page">
+
+  <div class="dash-header">
+    <h1>Explore the chart yourself</h1>
+    <p>
+      Filter 327,882 weekly Billboard Hot 100 entries (1958–2021) by year, artist, chart position,
+      and chart longevity. Every number, chart, and table row below recalculates from your filters
+      — nothing here is precomputed.
+    </p>
+  </div>
+
+  <section class="filter-bar" aria-label="Filters">
+    <div class="filter-field">
+      <label for="filter-year-min">Year from</label>
+      <div class="range-inputs">
+        <input type="number" id="filter-year-min" min="1958" max="2021" step="1" placeholder="1958" />
+        <span>–</span>
+        <input type="number" id="filter-year-max" min="1958" max="2021" step="1" placeholder="2021" />
+      </div>
+    </div>
+
+    <div class="filter-field filter-field--grow">
+      <label for="filter-performer">Artist</label>
+      <input type="search" id="filter-performer" list="performer-options" placeholder="Any artist" autocomplete="off" />
+      <datalist id="performer-options"></datalist>
+    </div>
+
+    <div class="filter-field">
+      <label for="filter-peak-tier">Peak position reached</label>
+      <select id="filter-peak-tier">
+        <option value="">Any position</option>
+        <option value="1">#1 only</option>
+        <option value="10">Top 10</option>
+        <option value="40">Top 40</option>
+        <option value="70">Top 70</option>
+      </select>
+    </div>
+
+    <div class="filter-field">
+      <label for="filter-min-weeks">Min. weeks on chart</label>
+      <input type="number" id="filter-min-weeks" min="0" max="90" step="1" placeholder="0" />
+    </div>
+
+    <button class="reset-btn" id="reset-filters" type="button">Reset filters</button>
+  </section>
+  <p class="filter-count" id="filter-count">Loading data…</p>
+
+  <section class="summary-strip" aria-label="Summary numbers for current filters">
+    <div class="stat-tile">
+      <div class="stat-tile__value" id="sum-entries">—</div>
+      <div class="stat-tile__label">Chart entries</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-tile__value" id="sum-songs">—</div>
+      <div class="stat-tile__label">Distinct songs</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-tile__value" id="sum-artists">—</div>
+      <div class="stat-tile__label">Distinct artists</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-tile__value" id="sum-avg-weeks">—</div>
+      <div class="stat-tile__label">Avg. weeks on chart</div>
+    </div>
+  </section>
+
+  <section class="chart-grid" aria-label="Charts">
+    <div class="chart-card" data-chart-card="1">
+      <div class="chart-card__head">
+        <h2 class="chart-card__title">Chart entries over time</h2>
+        <div class="chart-card__switches">
+          <select class="measure-select" aria-label="Measure"></select>
+          <select class="breakdown-select" aria-label="Break down by"></select>
+        </div>
+      </div>
+      <div class="chart-card__body"><canvas></canvas></div>
+    </div>
+
+    <div class="chart-card" data-chart-card="2">
+      <div class="chart-card__head">
+        <h2 class="chart-card__title">By chart position</h2>
+        <div class="chart-card__switches">
+          <select class="measure-select" aria-label="Measure"></select>
+          <select class="breakdown-select" aria-label="Break down by"></select>
+        </div>
+      </div>
+      <div class="chart-card__body"><canvas></canvas></div>
+    </div>
+
+    <div class="chart-card" data-chart-card="3">
+      <div class="chart-card__head">
+        <h2 class="chart-card__title">By artist</h2>
+        <div class="chart-card__switches">
+          <select class="measure-select" aria-label="Measure"></select>
+          <select class="breakdown-select" aria-label="Break down by"></select>
+        </div>
+      </div>
+      <div class="chart-card__body"><canvas></canvas></div>
+    </div>
+
+    <div class="chart-card" data-chart-card="4">
+      <div class="chart-card__head">
+        <h2 class="chart-card__title">By decade</h2>
+        <div class="chart-card__switches">
+          <select class="measure-select" aria-label="Measure"></select>
+          <select class="breakdown-select" aria-label="Break down by"></select>
+        </div>
+      </div>
+      <div class="chart-card__body"><canvas></canvas></div>
+    </div>
+  </section>
+
+  <section class="table-card" aria-label="Filtered data table">
+    <div class="table-card__head">
+      <h2>Chart entries behind this view</h2>
+      <span class="table-card__note" id="table-note"></span>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table" id="data-table">
+        <thead>
+          <tr>
+            <th data-key="date">Date</th>
+            <th data-key="song">Song</th>
+            <th data-key="performer">Artist</th>
+            <th data-key="week_position" class="num">Position</th>
+            <th data-key="previous_week_position" class="num">Prev. week</th>
+            <th data-key="peak_position" class="num">Peak</th>
+            <th data-key="weeks_on_chart" class="num">Weeks on chart</th>
+          </tr>
+        </thead>
+        <tbody id="data-table-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  Billboard Hot 100 weekly chart data, 1958–2021 · Built with Claude Code for a Financial Data
+  Analytics course project · <a href="https://github.com/rfordatascience/tidytuesday" target="_blank" rel="noopener">Data source</a>
+</footer>
+
+<script src="js/charts.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>
