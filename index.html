@@ -8,6 +8,14 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 <link rel="stylesheet" href="css/style.css" />
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -29,6 +37,10 @@
   </symbol>
   <symbol id="icon-eq" viewBox="0 0 24 24" fill="currentColor" stroke="none">
     <rect x="3" y="10" width="3" height="11" rx="1"/><rect x="10.5" y="4" width="3" height="17" rx="1"/><rect x="18" y="13" width="3" height="8" rx="1"/>
+  </symbol>
+  <symbol id="icon-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.73Z"/>
+    <path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>
   </symbol>
 </svg>
 
@@ -305,6 +317,28 @@
 
   </section>
 
+  <section class="skyline-section" aria-label="3D chart skyline">
+    <h2 class="section-heading"><svg class="icon icon-inline" aria-hidden="true"><use href="#icon-box"/></svg>Chart Skyline</h2>
+    <p>
+      Each tower is an artist from the top 10 — drag to orbit, scroll to zoom, and hover a tower or
+      a leaderboard row to see who it is.
+    </p>
+
+    <div class="skyline-toggle" role="group" aria-label="Choose which ranking drives the skyline">
+      <button type="button" class="skyline-toggle__btn is-active" data-metric="no1">Most #1 hits</button>
+      <button type="button" class="skyline-toggle__btn" data-metric="weeks">Most cumulative weeks on chart</button>
+    </div>
+
+    <div class="skyline-layout">
+      <div class="skyline-canvas-wrap" id="skyline-canvas-wrap">
+        <canvas id="skyline-canvas" role="img" aria-label="3D bar chart of the top 10 artists, rendered as towers you can orbit around"></canvas>
+        <p class="skyline-hint">Drag to orbit · scroll to zoom</p>
+        <button type="button" class="skyline-reset-btn" id="skyline-reset">Reset view</button>
+      </div>
+      <ol class="skyline-leaderboard" id="skyline-leaderboard" aria-label="Ranked artists"></ol>
+    </div>
+  </section>
+
   <section class="methodology" aria-label="About the data">
     <h2 class="section-heading"><svg class="icon icon-inline" aria-hidden="true"><use href="#icon-vinyl"/></svg>About this data</h2>
     <dl>
@@ -361,5 +395,6 @@
 
 <script src="js/charts.js"></script>
 <script src="js/report.js"></script>
+<script type="module" src="js/skyline.js"></script>
 </body>
 </html>

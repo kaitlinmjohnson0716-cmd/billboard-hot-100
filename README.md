@@ -8,20 +8,21 @@ Financial Data Analytics — Data Website Project, by Kaitlin Johnson
 A two-page static site built around every weekly Billboard Hot 100 chart position
 from August 1958 through May 2021 (327,882 chart entries, 29,389 songs, 10,061
 artists). `index.html` is a scrollable report with eight findings, each backed
-by a chart. `dashboard.html` is an interactive dashboard that loads the full
-dataset in the browser and lets you filter, switch measures, and switch chart
-breakdowns live.
+by a chart, plus a 3D "Chart Skyline" of the top artists. `dashboard.html` is
+an interactive dashboard that loads the full dataset in the browser and lets
+you filter, switch measures, and switch chart breakdowns live.
 
 ## Files
 
 | File | What it does |
 |---|---|
-| `index.html` | The report page: headline numbers, eight findings with charts, and a closing methodology section. |
+| `index.html` | The report page: headline numbers, eight findings with charts, a 3D "Chart Skyline" of the top 10 artists, and a closing methodology section. |
 | `dashboard.html` | The interactive dashboard: filters, summary numbers, four switchable charts, and a sortable data table. |
-| `css/style.css` | Shared styles for both pages (nav, layout, stat tiles, chart cards, table, filters). |
+| `css/style.css` | Shared styles for both pages (nav, layout, stat tiles, chart cards, table, filters, skyline). |
 | `js/charts.js` | Shared Chart.js theme and two small helpers (`makeBarChart`, `makeLineChart`) used by both pages. |
 | `js/report.js` | Fetches `data/report_stats.json` and renders the report page's numbers and charts. |
 | `js/dashboard.js` | Fetches `data/dashboard_data.json`, and implements all filtering, aggregation, chart switching, sorting, and the reset button entirely client-side. |
+| `js/skyline.js` | Three.js 3D scene for the report page's Chart Skyline (top 10 artists as orbitable towers). Loaded as an ES module via an import map, no build step. |
 | `data/raw/billboard_raw.csv.gz` | The original, unmodified source data (gzip-compressed). |
 | `data/billboard.csv` | The cleaned dataset (see "Rows dropped" below), one row per song per chart week. Used to compute every report number. |
 | `data/dashboard_data.json` | The same cleaned data, re-encoded as a compact indexed format (lookup tables for dates/songs/performers + integer-indexed rows) so the dashboard can fetch and filter ~328k rows in the browser without shipping a 60MB file. |
@@ -74,6 +75,7 @@ Then open `http://localhost:8000/index.html`.
 
 ## Stack
 
-Plain HTML, CSS, and JavaScript, plus [Chart.js](https://www.chartjs.org/)
-(loaded from a CDN) for charts. No build step, no framework, no other
-dependencies.
+Plain HTML, CSS, and JavaScript, plus [Chart.js](https://www.chartjs.org/) for the
+report and dashboard charts and [Three.js](https://threejs.org/) for the report
+page's 3D skyline — both loaded from a CDN. No build step, no framework, no
+other dependencies.
