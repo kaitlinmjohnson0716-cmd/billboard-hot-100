@@ -881,10 +881,10 @@ table.data-table {
 .skyline-canvas-wrap {
   position: relative;
   height: 460px;
-  border: 1px solid var(--gridline);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
-  background: var(--surface-1);
+  background: linear-gradient(160deg, var(--ink-navy) 0%, var(--ink-navy-raised) 100%);
 }
 
 .skyline-canvas-wrap canvas {
