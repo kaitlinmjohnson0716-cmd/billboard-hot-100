@@ -99,8 +99,18 @@ def main():
         if r["peak_position"] == 1:
             no1_songs_by_artist[r["performer"]].add(r["song"])
     top_no1_artists = sorted(no1_songs_by_artist.items(), key=lambda kv: -len(kv[1]))[:10]
+
+    # Calendar years each artist actually held week_position 1 — drives the
+    # "when did their #1s happen" timeline, as an alternative view of the
+    # same top-10 list rather than a second count of the same totals.
+    no1_years_by_artist = defaultdict(set)
+    for r in rows:
+        if r["week_position"] == 1:
+            no1_years_by_artist[r["performer"]].add(r["year"])
+
     stats["most_no1_by_artist"] = [
-        {"artist": a, "count": len(s)} for a, s in top_no1_artists
+        {"artist": a, "count": len(s), "years": sorted(no1_years_by_artist[a])}
+        for a, s in top_no1_artists
     ]
 
     # --- 4. most cumulative weeks on chart by artist ---

@@ -169,6 +169,7 @@
         <div class="finding__chart-canvas-wrap">
           <canvas id="chart-peak-distribution" role="img" aria-label="Bar chart of songs by peak chart position reached"></canvas>
         </div>
+        <p class="chart-note">Note: these buckets span different numbers of chart positions — #1 is 1 position, Top 10 is 9, and 11–40 / 41–70 / 71–100 are 30 each — so a taller bar partly reflects a wider bucket, not just more songs.</p>
       </div>
     </article>
 
@@ -190,7 +191,7 @@
       </div>
     </article>
 
-    <article class="finding reveal c3" data-rail-section data-rail-label="#1s by artist" data-accent="var(--series-3)">
+    <article class="finding finding--stacked reveal c4" data-rail-section data-rail-label="#1s by artist" data-accent="var(--series-4)">
       <div>
         <div class="finding__tag"><svg class="icon" aria-hidden="true"><use href="#icon-mic"/></svg>By artist · #1 hits</div>
         <h2>The Beatles and Mariah Carey have the most #1 hits of any act</h2>
@@ -198,17 +199,18 @@
           The Beatles lead all artists with 19 different songs that reached #1, followed by
           Mariah Carey with 16 and Madonna with 12. Only ten acts in chart history have reached
           #1 with seven or more distinct songs — reaching the top even once is rare enough that
-          reaching it repeatedly marks a handful of genuinely dominant careers.
+          reaching it repeatedly marks a handful of genuinely dominant careers. The 3D skyline
+          above shows the same top 10 ranked by count; below is when those #1s actually happened.
         </p>
-        <p>Counts unique songs per artist whose <code>peak_position</code> equals 1.</p>
+        <p>Each lit cell is a calendar year that artist held <code>week_position</code> 1 with any song.</p>
       </div>
       <div class="finding__visual">
-        <p class="finding__visual-title">Most #1 songs, by artist (top 10)</p>
-        <div class="rank-list" id="rank-no1-artist"></div>
+        <p class="finding__visual-title">When each artist's #1 hits happened (top 10, 1958–2021)</p>
+        <div class="calendar-strip" id="no1-timeline" role="img" aria-label="Grid of which years each of the top 10 artists by number of number-one hits held the top chart position"></div>
       </div>
     </article>
 
-    <article class="finding reveal c4" data-rail-section data-rail-label="Chart-weeks by artist" data-accent="var(--series-4)">
+    <article class="finding reveal c3" data-rail-section data-rail-label="Chart-weeks by artist" data-accent="var(--series-3)">
       <div>
         <div class="finding__tag"><svg class="icon" aria-hidden="true"><use href="#icon-headphones"/></svg>By artist · chart weeks</div>
         <h2>Taylor Swift has spent more cumulative time on the Hot 100 than anyone</h2>
@@ -226,7 +228,7 @@
       </div>
     </article>
 
-    <article class="finding finding--stacked reveal c5" data-rail-section data-rail-label="One-hit wonders" data-accent="var(--series-5)">
+    <article class="finding finding--hero reveal c5" data-rail-section data-rail-label="One-hit wonders" data-accent="var(--series-5)">
       <div>
         <div class="finding__tag"><svg class="icon" aria-hidden="true"><use href="#icon-vinyl"/></svg>By artist · one-and-done</div>
         <h2>Nearly two-thirds of charting artists only ever charted once</h2>
@@ -269,7 +271,7 @@
       </div>
     </article>
 
-    <article class="finding finding--stacked reveal c2" data-rail-section data-rail-label="#1 longevity" data-accent="var(--series-2)">
+    <article class="finding finding--hero reveal c2" data-rail-section data-rail-label="#1 longevity" data-accent="var(--series-2)">
       <div>
         <div class="finding__tag"><svg class="icon" aria-hidden="true"><use href="#icon-vinyl"/></svg>By decade · #1 longevity</div>
         <h2>#1 songs now hold the top spot almost twice as long as they did in the 1970s</h2>

@@ -260,7 +260,7 @@ a {
 
 /* ---------------- Hero interactive graphic (equalizer) ---------------- */
 .hero__viz {
-  flex: 0 0 300px;
+  flex: 0 0 340px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-lg);
@@ -287,7 +287,7 @@ a {
   display: flex;
   align-items: flex-end;
   gap: 7px;
-  height: 130px;
+  height: 148px;
 }
 
 .hero__viz-bar {
@@ -305,6 +305,7 @@ a {
 }
 
 .hero__viz-bar-fill {
+  position: relative;
   width: 100%;
   height: var(--h);
   min-height: 4px;
@@ -314,6 +315,18 @@ a {
   animation: viz-pulse 2.6s ease-in-out infinite;
   animation-delay: var(--delay);
   transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.hero__viz-bar-value {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%);
+  margin-bottom: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #fff;
+  white-space: nowrap;
 }
 
 .hero__viz-bar:hover .hero__viz-bar-fill,
@@ -509,7 +522,7 @@ a {
   border: 1px solid var(--gridline);
   border-radius: var(--radius);
   padding: 16px 16px 8px;
-  height: 300px;
+  height: 320px;
   display: flex;
   flex-direction: column;
 }
@@ -537,6 +550,14 @@ a {
   height: 100% !important;
 }
 
+.chart-note {
+  margin: 10px 0 0;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-muted);
+  flex: 0 0 auto;
+}
+
 /* Unboxed slot for the custom (non-Chart.js) visuals, so they don't all
    repeat the same bordered-canvas shape. */
 .finding__visual {
@@ -549,6 +570,78 @@ a {
 .finding--stacked .finding__visual {
   margin-top: 22px;
   min-height: 0;
+}
+
+/* ---- Hero finding: full-width colored moment for the headline stats,
+   breaking from the repeated white-card shape on purpose. ---- */
+.finding.finding--hero {
+  display: block;
+  border: none;
+  box-shadow: var(--shadow-lg);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 48%, var(--ink-navy)) 0%, var(--ink-navy) 100%);
+  padding: 44px 36px;
+  text-align: center;
+}
+
+.finding--hero::before {
+  display: none;
+}
+
+.finding--hero .finding__tag {
+  margin: 0 auto 16px;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.finding--hero .finding__tag .icon {
+  color: #fff;
+}
+
+.finding--hero h2 {
+  color: #fff;
+  max-width: 48ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.finding--hero p {
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 62ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.finding--hero code {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.finding--hero .finding__visual {
+  margin-top: 28px;
+}
+
+.finding--hero .waffle-callout__label,
+.finding--hero .big-compare__label {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.finding--hero .waffle-callout__value {
+  color: #fff;
+}
+
+.finding--hero .waffle__cell {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.finding--hero .big-compare__value {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.finding--hero .big-compare__value.is-accent {
+  color: #fff;
 }
 
 .finding__visual-title {
@@ -990,6 +1083,50 @@ table.data-table {
   cursor: grabbing;
 }
 
+.skyline-label-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.skyline-tower-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(16, 26, 43, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(2px);
+  white-space: nowrap;
+  transform: translate(-50%, -100%);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.skyline-tower-label__name {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.skyline-tower-label__value {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.skyline-tower-label.is-active {
+  background: var(--series-2);
+  border-color: var(--series-2);
+  transform: translate(-50%, -100%) scale(1.08);
+}
+
+.skyline-tower-label.is-active .skyline-tower-label__value {
+  color: rgba(255, 255, 255, 0.9);
+}
+
 .skyline-hint {
   position: absolute;
   left: 14px;
@@ -1070,11 +1207,9 @@ table.data-table {
   flex: 1;
   font-size: 13px;
   font-weight: 600;
+  line-height: 1.3;
   color: var(--text-primary);
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .skyline-leaderboard__value {
@@ -1243,9 +1378,7 @@ table.data-table {
   font-size: 13px;
   font-weight: 700;
   color: var(--text-primary);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.25;
 }
 
 .rank-list__track {
@@ -1319,6 +1452,17 @@ table.data-table {
   align-self: center;
 }
 
+@media (max-width: 560px) {
+  .big-compare__item {
+    flex-basis: 100%;
+  }
+  .big-compare__arrow {
+    display: block;
+    transform: rotate(90deg);
+    margin: -4px 0;
+  }
+}
+
 .big-compare__multiplier {
   display: block;
   flex-basis: 100%;
@@ -1348,11 +1492,64 @@ table.data-table {
   min-width: 0;
 }
 
+.climb-card__chart {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.climb-card__axis {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2px 0;
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+.climb-card__svg-wrap {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .climb-card__svg {
   width: 100%;
-  height: 56px;
+  height: 64px;
   display: block;
   overflow: visible;
+}
+
+.climb-card__point-label {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  margin-top: -5px;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--surface-raised);
+  border: 1px solid var(--gridline);
+  color: var(--text-muted);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.climb-card.is-visible .climb-card__point-label {
+  opacity: 1;
+}
+
+.climb-card__point-label.is-debut {
+  transform: translate(2px, -100%);
+}
+
+.climb-card__point-label.is-peak {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, white);
 }
 
 .climb-card__line {
@@ -1370,32 +1567,47 @@ table.data-table {
   stroke-dashoffset: 0;
 }
 
-.climb-card__peak {
-  fill: var(--accent);
+.climb-card__peak,
+.climb-card__debut {
   opacity: 0;
-  transition: opacity 0.3s ease 1.1s;
+  transition: opacity 0.3s ease;
 }
 
-.climb-card.is-visible .climb-card__peak {
+.climb-card__peak {
+  fill: var(--accent);
+}
+
+.climb-card__debut {
+  fill: var(--text-muted);
+}
+
+.climb-card.is-visible .climb-card__peak,
+.climb-card.is-visible .climb-card__debut {
   opacity: 1;
 }
 
 .climb-card__meta {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .climb-card__song {
   margin: 0;
   font-size: 13px;
   font-weight: 700;
+  line-height: 1.3;
   color: var(--text-primary);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+}
+
+.climb-card__artist {
+  margin: 1px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-muted);
 }
 
 .climb-card__stat {
-  margin: 2px 0 0;
+  margin: 6px 0 0;
   font-size: 12px;
   color: var(--text-muted);
 }
@@ -1406,25 +1618,24 @@ table.data-table {
   }
 }
 
-/* ---- Calendar strip (recurring / holiday perennial songs) ---- */
+/* ---- Calendar strip (year grids: recurring songs, #1s-by-year timeline) ----
+   Cells use a (var(--n)) responsive grid rather than a fixed px width, so the
+   full year range always fits the container with no horizontal scroll. */
 .calendar-strip {
   display: flex;
   flex-direction: column;
-  gap: 9px;
-  overflow-x: auto;
-  padding-bottom: 4px;
+  gap: 10px;
 }
 
 .calendar-strip__axis {
-  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--n, 64), 1fr);
+  margin-left: 166px;
   height: 14px;
-  margin-left: 162px;
-  margin-bottom: 2px;
 }
 
 .calendar-strip__axis span {
-  position: absolute;
-  top: 0;
+  grid-row: 1;
   font-size: 10px;
   font-weight: 700;
   color: var(--text-muted);
@@ -1438,24 +1649,35 @@ table.data-table {
 }
 
 .calendar-strip__label {
-  flex: 0 0 152px;
+  flex: 0 0 156px;
+  min-width: 0;
+}
+
+.calendar-strip__song {
+  margin: 0;
   font-size: 12px;
   font-weight: 700;
+  line-height: 1.25;
   color: var(--text-primary);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+}
+
+.calendar-strip__artist {
+  margin: 1px 0 0;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-muted);
 }
 
 .calendar-strip__cells {
+  flex: 1 1 auto;
+  min-width: 0;
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 7px;
-  gap: 2px;
+  grid-template-columns: repeat(var(--n, 64), 1fr);
+  gap: 1px;
 }
 
 .calendar-strip__cell {
-  width: 5px;
   height: 16px;
   border-radius: 1px;
   background: var(--gridline);
@@ -1473,4 +1695,16 @@ table.data-table {
 
 .calendar-strip__cell.is-on {
   background: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .calendar-strip__axis {
+    margin-left: 96px;
+  }
+  .calendar-strip__label {
+    flex-basis: 86px;
+  }
+  .calendar-strip__cell {
+    height: 13px;
+  }
 }

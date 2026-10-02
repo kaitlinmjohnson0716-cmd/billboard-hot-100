@@ -38,9 +38,14 @@
       fill.className = "hero__viz-bar-fill";
       fill.style.setProperty("--h", `${Math.max((d.avg_weeks / maxVal) * 100, 3)}%`);
 
+      const value = document.createElement("span");
+      value.className = "hero__viz-bar-value";
+      value.textContent = d.avg_weeks.toFixed(1);
+      fill.appendChild(value);
+
       const label = document.createElement("span");
       label.className = "hero__viz-bar-label";
-      label.textContent = d.decade.replace("s", "'s");
+      label.textContent = d.decade;
 
       bar.appendChild(fill);
       bar.appendChild(label);
@@ -77,16 +82,31 @@
           .map((p, i) => `${((i / (n - 1)) * 100).toFixed(2)},${((p / 100) * 40).toFixed(2)}`)
           .join(" ");
         const peakIndex = ex.positions.indexOf(ex.peak_position);
-        const peakX = ((peakIndex / (n - 1)) * 100).toFixed(2);
-        const peakY = ((ex.peak_position / 100) * 40).toFixed(2);
+        // The SVG viewBox is exactly 100 units wide and each y maps to
+        // position/100 of its 40-unit height, so the x/y viewBox coordinates
+        // already equal the x/y percentages needed to place the HTML label
+        // overlays (debut is always the first point, so its x is 0%).
+        const peakXPct = (peakIndex / (n - 1)) * 100;
+        const peakYPct = ex.peak_position;
+        const debutYPct = ex.debut_position;
+
         return `
           <div class="climb-card">
-            <svg class="climb-card__svg" viewBox="0 0 100 40" preserveAspectRatio="none" role="img" aria-label="Weekly chart position of ${escapeHtml(ex.song)} by ${escapeHtml(ex.artist)}, climbing from number ${ex.debut_position} to number one">
-              <polyline class="climb-card__line" points="${points}"></polyline>
-              <circle class="climb-card__peak" cx="${peakX}" cy="${peakY}" r="2.2"></circle>
-            </svg>
+            <div class="climb-card__chart">
+              <div class="climb-card__axis" aria-hidden="true"><span>#1</span><span>#100</span></div>
+              <div class="climb-card__svg-wrap">
+                <svg class="climb-card__svg" viewBox="0 0 100 40" preserveAspectRatio="none" role="img" aria-label="Weekly chart position of ${escapeHtml(ex.song)} by ${escapeHtml(ex.artist)}, climbing from number ${ex.debut_position} to number one">
+                  <polyline class="climb-card__line" points="${points}"></polyline>
+                  <circle class="climb-card__debut" cx="0" cy="${((ex.debut_position / 100) * 40).toFixed(2)}" r="2.2"></circle>
+                  <circle class="climb-card__peak" cx="${peakXPct.toFixed(2)}" cy="${((ex.peak_position / 100) * 40).toFixed(2)}" r="2.2"></circle>
+                </svg>
+                <span class="climb-card__point-label is-debut" style="left:0%;top:${debutYPct}%">#${ex.debut_position} debut</span>
+                <span class="climb-card__point-label is-peak" style="left:${peakXPct.toFixed(2)}%;top:${peakYPct}%">#1 peak</span>
+              </div>
+            </div>
             <div class="climb-card__meta">
-              <p class="climb-card__song">${escapeHtml(ex.song)} — ${escapeHtml(ex.artist)}</p>
+              <p class="climb-card__song">${escapeHtml(ex.song)}</p>
+              <p class="climb-card__artist">${escapeHtml(ex.artist)}</p>
               <p class="climb-card__stat">Debuted #${ex.debut_position} → #1 (${ex.weeks_on_chart} weeks on chart total)</p>
             </div>
           </div>`;
@@ -98,7 +118,7 @@
     });
   })();
 
-  // Shared renderer for the two by-artist leaderboards (findings 3 and 4)
+  // Shared renderer for by-artist leaderboards (finding 4)
   function renderRankList(elementId, items, { nameKey, valueKey, valueFmt }) {
     const container = document.getElementById(elementId);
     const max = Math.max(...items.map((d) => d[valueKey]));
@@ -113,11 +133,48 @@
       .join("");
   }
 
-  // 3. most #1 songs by artist
-  renderRankList("rank-no1-artist", stats.most_no1_by_artist, {
-    nameKey: "artist",
-    valueKey: "count",
-    valueFmt: (v) => `${v} #1s`,
+  // Shared renderer for the two year-grid visuals (finding 3's #1 timeline and
+  // finding 8's recurring-song calendar). Uses a CSS grid sized to the exact
+  // year count (var(--n)) so the full range always fits without scrolling.
+  function renderYearGrid(elementId, rows, { yearMin, yearMax, label, subLabel }) {
+    const container = document.getElementById(elementId);
+    const totalYears = yearMax - yearMin + 1;
+    container.style.setProperty("--n", totalYears);
+
+    const axisYears = [];
+    for (let y = Math.ceil(yearMin / 10) * 10; y <= yearMax; y += 10) axisYears.push(y);
+    const axisHtml = axisYears
+      .map((y) => `<span style="grid-column:${y - yearMin + 1}">${y}</span>`)
+      .join("");
+
+    const rowsHtml = rows
+      .map((row) => {
+        const years = new Set(row.years);
+        const cells = [];
+        for (let y = yearMin; y <= yearMax; y++) {
+          const i = y - yearMin;
+          cells.push(`<span class="calendar-strip__cell${years.has(y) ? " is-on" : ""}" style="--d:${i * 3}ms" title="${y}"></span>`);
+        }
+        return `
+          <div class="calendar-strip__row">
+            <div class="calendar-strip__label">
+              <p class="calendar-strip__song">${escapeHtml(label(row))}</p>
+              <p class="calendar-strip__artist">${escapeHtml(subLabel(row))}</p>
+            </div>
+            <div class="calendar-strip__cells">${cells.join("")}</div>
+          </div>`;
+      })
+      .join("");
+
+    container.innerHTML = `<div class="calendar-strip__axis" aria-hidden="true">${axisHtml}</div>${rowsHtml}`;
+  }
+
+  // 3. when each top-10 #1 artist's #1 hits happened
+  renderYearGrid("no1-timeline", stats.most_no1_by_artist, {
+    yearMin: stats.headline.year_min,
+    yearMax: stats.headline.year_max,
+    label: (row) => row.artist,
+    subLabel: (row) => `${row.count} #1 ${row.count === 1 ? "hit" : "hits"}`,
   });
 
   // 4. most cumulative weeks by artist
@@ -182,33 +239,12 @@
   })();
 
   // 8. most recurring songs -> calendar strip
-  (function renderCalendarStrip() {
-    const container = document.getElementById("calendar-strip");
-    const { year_min: yearMin, year_max: yearMax } = stats.headline;
-    const songs = stats.most_recurring_songs.slice(0, 8);
-
-    const axisYears = [];
-    for (let y = Math.ceil(yearMin / 10) * 10; y <= yearMax; y += 10) axisYears.push(y);
-    const axisHtml = axisYears.map((y) => `<span style="left:${(y - yearMin) * 9}px">${y}</span>`).join("");
-
-    const rowsHtml = songs
-      .map((song) => {
-        const years = new Set(song.years);
-        const cells = [];
-        for (let y = yearMin; y <= yearMax; y++) {
-          const i = y - yearMin;
-          cells.push(`<span class="calendar-strip__cell${years.has(y) ? " is-on" : ""}" style="--d:${i * 4}ms" title="${y}"></span>`);
-        }
-        return `
-          <div class="calendar-strip__row">
-            <span class="calendar-strip__label">${escapeHtml(song.song)}</span>
-            <div class="calendar-strip__cells">${cells.join("")}</div>
-          </div>`;
-      })
-      .join("");
-
-    container.innerHTML = `<div class="calendar-strip__axis">${axisHtml}</div>${rowsHtml}`;
-  })();
+  renderYearGrid("calendar-strip", stats.most_recurring_songs.slice(0, 8), {
+    yearMin: stats.headline.year_min,
+    yearMax: stats.headline.year_max,
+    label: (row) => row.song,
+    subLabel: (row) => row.artist,
+  });
 
   setupScrollEffects();
 })();

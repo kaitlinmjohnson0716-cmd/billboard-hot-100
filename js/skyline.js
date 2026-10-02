@@ -4,6 +4,7 @@
 // Three.js materials don't read CSS custom properties.
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { CSS2DRenderer, CSS2DObject } from "three/addons/renderers/CSS2DRenderer.js";
 
 const COLOR_TOWER = 0x2a78d6;
 const COLOR_HOVER = 0xeb6834;
@@ -45,6 +46,10 @@ camera.position.copy(DEFAULT_CAM_POS);
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.shadowMap.enabled = true;
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.domElement.className = "skyline-label-layer";
+container.appendChild(labelRenderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
@@ -215,6 +220,10 @@ function buildTowers(metric) {
   towers.forEach((t) => {
     t.mesh.geometry.dispose();
     t.mesh.material.dispose();
+    // CSS2DRenderer doesn't remove a label's DOM node on its own just
+    // because the owning mesh left the scene graph — remove it explicitly
+    // or switching metrics leaves stale labels stacked on the new ones.
+    t.labelDiv.remove();
   });
   towerGroup.clear();
   towers = [];
@@ -239,12 +248,29 @@ function buildTowers(metric) {
     mesh.castShadow = true;
     towerGroup.add(mesh);
 
+    const unitLabel = value === 1 ? cfg.unit : cfg.unitPlural;
+
+    const labelDiv = document.createElement("div");
+    labelDiv.className = "skyline-tower-label";
+    const nameEl = document.createElement("span");
+    nameEl.className = "skyline-tower-label__name";
+    nameEl.textContent = row.artist;
+    const valueEl = document.createElement("span");
+    valueEl.className = "skyline-tower-label__value";
+    valueEl.textContent = `${fmtNumber(value)} ${unitLabel}`;
+    labelDiv.append(nameEl, valueEl);
+
+    const label = new CSS2DObject(labelDiv);
+    label.position.set(0, height / 2 + 0.45, 0);
+    mesh.add(label);
+
     towers.push({
       mesh,
+      labelDiv,
       index: i,
       artist: row.artist,
       value,
-      unitLabel: value === 1 ? cfg.unit : cfg.unitPlural,
+      unitLabel,
     });
   });
 }
@@ -290,7 +316,9 @@ function setPinned(index) {
 function updateHighlight() {
   const activeIndex = hoveredIndex ?? pinnedIndex;
   towers.forEach((t) => {
-    t.mesh.material.color.setHex(t.index === activeIndex ? COLOR_HOVER : COLOR_TOWER);
+    const isActive = t.index === activeIndex;
+    t.mesh.material.color.setHex(isActive ? COLOR_HOVER : COLOR_TOWER);
+    t.labelDiv.classList.toggle("is-active", isActive);
   });
   Array.from(leaderboardEl.children).forEach((li) => {
     li.classList.toggle("is-active", Number(li.dataset.index) === activeIndex);
@@ -338,6 +366,7 @@ function resize() {
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
   renderer.setSize(width, height, false);
+  labelRenderer.setSize(width, height);
 }
 
 new ResizeObserver(resize).observe(container);
@@ -350,6 +379,7 @@ function animate() {
   pickTower();
   controls.update();
   renderer.render(scene, camera);
+  labelRenderer.render(scene, camera);
 }
 
 toggleBtns.forEach((btn) => {
