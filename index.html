@@ -17,7 +17,9 @@
 }
 </script>
 </head>
-<body>
+<body class="page--report">
+
+<nav class="scroll-rail" id="scroll-rail" aria-label="Scroll progress through the report"></nav>
 
 <svg style="display:none" aria-hidden="true">
   <symbol id="icon-note" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -93,28 +95,28 @@
 <main class="page">
 
   <section class="stat-strip" id="headline-stats" aria-label="Headline numbers">
-    <div class="stat-tile">
+    <div class="stat-tile reveal">
       <div class="stat-tile__icon"><svg class="icon" aria-hidden="true"><use href="#icon-eq"/></svg></div>
       <div class="stat-tile__text">
-        <div class="stat-tile__value" id="stat-total-entries">—</div>
+        <div class="stat-tile__value count-up" id="stat-total-entries" data-target="0">—</div>
         <div class="stat-tile__label">Weekly chart appearances</div>
       </div>
     </div>
-    <div class="stat-tile">
+    <div class="stat-tile reveal">
       <div class="stat-tile__icon"><svg class="icon" aria-hidden="true"><use href="#icon-note"/></svg></div>
       <div class="stat-tile__text">
-        <div class="stat-tile__value" id="stat-unique-songs">—</div>
+        <div class="stat-tile__value count-up" id="stat-unique-songs" data-target="0">—</div>
         <div class="stat-tile__label">Distinct songs charted</div>
       </div>
     </div>
-    <div class="stat-tile">
+    <div class="stat-tile reveal">
       <div class="stat-tile__icon"><svg class="icon" aria-hidden="true"><use href="#icon-mic"/></svg></div>
       <div class="stat-tile__text">
-        <div class="stat-tile__value" id="stat-unique-artists">—</div>
+        <div class="stat-tile__value count-up" id="stat-unique-artists" data-target="0">—</div>
         <div class="stat-tile__label">Distinct artists charted</div>
       </div>
     </div>
-    <div class="stat-tile">
+    <div class="stat-tile reveal">
       <div class="stat-tile__icon"><svg class="icon" aria-hidden="true"><use href="#icon-vinyl"/></svg></div>
       <div class="stat-tile__text">
         <div class="stat-tile__value" id="stat-year-range">—</div>
@@ -123,7 +125,7 @@
     </div>
   </section>
 
-  <section class="skyline-section" aria-label="3D chart skyline">
+  <section class="skyline-section reveal" aria-label="3D chart skyline" data-rail-section data-rail-label="Chart Skyline" data-accent="var(--series-2)">
     <h2 class="section-heading"><svg class="icon icon-inline" aria-hidden="true"><use href="#icon-box"/></svg>Chart Skyline</h2>
     <p>
       The top 10 artists, spinning on a record — each tower is an artist. Drag to orbit, scroll to
@@ -147,12 +149,9 @@
 
   <section class="section-list" aria-label="Findings">
 
-    <article class="finding">
+    <article class="finding reveal c1" data-rail-section data-rail-label="Peak position" data-accent="var(--series-1)">
       <div>
-        <div class="finding__marker">
-          <svg class="icon" aria-hidden="true"><use href="#icon-eq"/></svg>
-          <div class="finding__rank">1</div>
-        </div>
+        <div class="finding__tag"><svg class="icon" aria-hidden="true"><use href="#icon-eq"/></svg>By song · peak position</div>
         <h2>Most songs that ever chart never crack the Top 10</h2>
         <p>
           Of the 29,389 distinct songs that have appeared on the Hot 100, only 1,124 (3.8%) ever
@@ -173,12 +172,9 @@
       </div>
     </article>
 
-    <article class="finding">
+    <article class="finding reveal c2" data-rail-section data-rail-label="Debut → #1" data-accent="var(--series-2)">
       <div>
-        <div class="finding__marker">
-          <svg class="icon" aria-hidden="true"><use href="#icon-note"/></svg>
-          <div class="finding__rank">2</div>
-        </div>
+        <div class="finding__tag"><svg class="icon" aria-hidden="true"><use href="#icon-note"/></svg>By song · chart trajectory</div>
         <h2>Most eventual #1 hits don't debut anywhere near the top</h2>
         <p>
           Among the 1,124 songs that eventually reached #1, the average debut position was
@@ -186,22 +182,17 @@
           #71 and #100, and only 93 debuted in the Top 10. Chart-toppers are almost always songs
           that climbed over several weeks, not songs that entered as instant hits.
         </p>
-        <p>Debut position is each song's <code>week_position</code> on its first charting week.</p>
+        <p>Below are the four most extreme cases: real songs that debuted at dead last, #100, and still climbed all the way to #1.</p>
       </div>
-      <div class="finding__chart">
-        <p class="finding__chart-title">Debut position of eventual #1 hits (n=1,124)</p>
-        <div class="finding__chart-canvas-wrap">
-          <canvas id="chart-debut-position" role="img" aria-label="Bar chart of debut chart position for songs that eventually reached number one"></canvas>
-        </div>
+      <div class="finding__visual">
+        <p class="finding__visual-title">Four #1 hits that debuted at #100</p>
+        <div class="climb-grid" id="climb-grid"></div>
       </div>
     </article>
 
-    <article class="finding">
+    <article class="finding reveal c3" data-rail-section data-rail-label="#1s by artist" data-accent="var(--series-3)">
       <div>
-        <div class="finding__marker">
-          <svg class="icon" aria-hidden="true"><use href="#icon-mic"/></svg>
-          <div class="finding__rank">3</div>
-        </div>
+        <div class="finding__tag"><svg class="icon" aria-hidden="true"><use href="#icon-mic"/></svg>By artist · #1 hits</div>
         <h2>The Beatles and Mariah Carey have the most #1 hits of any act</h2>
         <p>
           The Beatles lead all artists with 19 different songs that reached #1, followed by
@@ -211,20 +202,15 @@
         </p>
         <p>Counts unique songs per artist whose <code>peak_position</code> equals 1.</p>
       </div>
-      <div class="finding__chart">
-        <p class="finding__chart-title">Most #1 songs, by artist (top 10)</p>
-        <div class="finding__chart-canvas-wrap">
-          <canvas id="chart-no1-by-artist" role="img" aria-label="Horizontal bar chart of artists ranked by number of songs that reached number one"></canvas>
-        </div>
+      <div class="finding__visual">
+        <p class="finding__visual-title">Most #1 songs, by artist (top 10)</p>
+        <div class="rank-list" id="rank-no1-artist"></div>
       </div>
     </article>
 
-    <article class="finding">
+    <article class="finding reveal c4" data-rail-section data-rail-label="Chart-weeks by artist" data-accent="var(--series-4)">
       <div>
-        <div class="finding__marker">
-          <svg class="icon" aria-hidden="true"><use href="#icon-headphones"/></svg>
-          <div class="finding__rank">4</div>
-        </div>
+        <div class="finding__tag"><svg class="icon" aria-hidden="true"><use href="#icon-headphones"/></svg>By artist · chart weeks</div>
         <h2>Taylor Swift has spent more cumulative time on the Hot 100 than anyone</h2>
         <p>
           Counting every song-week an artist has spent anywhere on the chart, Taylor Swift leads
@@ -234,20 +220,15 @@
         </p>
         <p>Sum of chart-weeks (one row = one artist-song-week) grouped by <code>performer</code>.</p>
       </div>
-      <div class="finding__chart">
-        <p class="finding__chart-title">Most cumulative weeks on the chart, by artist (top 10)</p>
-        <div class="finding__chart-canvas-wrap">
-          <canvas id="chart-weeks-by-artist" role="img" aria-label="Horizontal bar chart of artists ranked by cumulative weeks spent on the chart"></canvas>
-        </div>
+      <div class="finding__visual">
+        <p class="finding__visual-title">Most cumulative weeks on the chart, by artist (top 10)</p>
+        <div class="rank-list" id="rank-weeks-artist"></div>
       </div>
     </article>
 
-    <article class="finding">
+    <article class="finding finding--stacked reveal c5" data-rail-section data-rail-label="One-hit wonders" data-accent="var(--series-5)">
       <div>
-        <div class="finding__marker">
-          <svg class="icon" aria-hidden="true"><use href="#icon-vinyl"/></svg>
-          <div class="finding__rank">5</div>
-        </div>
+        <div class="finding__tag"><svg class="icon" aria-hidden="true"><use href="#icon-vinyl"/></svg>By artist · one-and-done</div>
         <h2>Nearly two-thirds of charting artists only ever charted once</h2>
         <p>
           6,493 of the 10,061 artists who ever appeared on the Hot 100 — 64.5% — did so with
@@ -255,22 +236,22 @@
           different songs. The chart's history is built mostly from one-time appearances, with
           a small core of repeat hitmakers.
         </p>
-        <p>Buckets count distinct songs per artist across all 63 years.</p>
+        <p>Each dot below is one percentage point. Buckets count distinct songs per artist across all 63 years.</p>
       </div>
-      <div class="finding__chart">
-        <p class="finding__chart-title">Artists by number of distinct songs charted</p>
-        <div class="finding__chart-canvas-wrap">
-          <canvas id="chart-one-hit" role="img" aria-label="Bar chart of artists bucketed by number of distinct charting songs"></canvas>
+      <div class="finding__visual">
+        <div class="waffle-block">
+          <div class="waffle" id="waffle-one-hit" aria-hidden="true"></div>
+          <div class="waffle-callout">
+            <div class="waffle-callout__value count-up" id="waffle-pct" data-target="0" data-decimals="1" data-suffix="%">—</div>
+            <p class="waffle-callout__label">of all <span id="waffle-total">—</span> charting artists had exactly one song ever reach the Hot 100</p>
+          </div>
         </div>
       </div>
     </article>
 
-    <article class="finding">
+    <article class="finding reveal c1" data-rail-section data-rail-label="Chart duration" data-accent="var(--series-1)">
       <div>
-        <div class="finding__marker">
-          <svg class="icon" aria-hidden="true"><use href="#icon-note"/></svg>
-          <div class="finding__rank">6</div>
-        </div>
+        <div class="finding__tag"><svg class="icon" aria-hidden="true"><use href="#icon-note"/></svg>By decade · chart duration</div>
         <h2>Songs stick around longer now than they did in the 1960s — up to a point</h2>
         <p>
           The average total weeks a song spends on the chart rose steadily from 7.6 weeks in the
@@ -288,36 +269,26 @@
       </div>
     </article>
 
-    <article class="finding">
+    <article class="finding finding--stacked reveal c2" data-rail-section data-rail-label="#1 longevity" data-accent="var(--series-2)">
       <div>
-        <div class="finding__marker">
-          <svg class="icon" aria-hidden="true"><use href="#icon-vinyl"/></svg>
-          <div class="finding__rank">7</div>
-        </div>
+        <div class="finding__tag"><svg class="icon" aria-hidden="true"><use href="#icon-vinyl"/></svg>By decade · #1 longevity</div>
         <h2>#1 songs now hold the top spot almost twice as long as they did in the 1970s</h2>
         <p>
-          The average reign at #1 bottomed out at 2.06 weeks in the 1970s and has climbed almost
-          every decade since, reaching 4.50 weeks in the 2010s — more than double. Every decade
-          from the 1960s on has roughly the same total number of #1 weeks available (about 520,
-          since there's exactly one #1 slot per week), so a longer average reign directly means
-          fewer different songs get to be #1 in a given decade.
+          The average reign at #1 bottomed out in the 1970s and has climbed almost every decade
+          since. Every decade from the 1960s on has roughly the same total number of #1 weeks
+          available (about 520, since there's exactly one #1 slot per week), so a longer average
+          reign directly means fewer different songs get to be #1 in a given decade.
         </p>
         <p>Average reign = total weeks any song spent at <code>week_position</code> 1 in a decade, divided by the number of distinct songs that reached #1 that decade.</p>
       </div>
-      <div class="finding__chart">
-        <p class="finding__chart-title">Average #1 reign length, by decade</p>
-        <div class="finding__chart-canvas-wrap">
-          <canvas id="chart-reign-by-decade" role="img" aria-label="Line chart of average number one reign length in weeks by decade"></canvas>
-        </div>
+      <div class="finding__visual">
+        <div class="big-compare" id="big-compare-reign" role="img" aria-label="Comparison of average number one reign length between the 1970s and the 2010s"></div>
       </div>
     </article>
 
-    <article class="finding">
+    <article class="finding finding--stacked reveal c3" data-rail-section data-rail-label="Chart perennials" data-accent="var(--series-3)">
       <div>
-        <div class="finding__marker">
-          <svg class="icon" aria-hidden="true"><use href="#icon-mic"/></svg>
-          <div class="finding__rank">8</div>
-        </div>
+        <div class="finding__tag"><svg class="icon" aria-hidden="true"><use href="#icon-mic"/></svg>By song · recurring years</div>
         <h2>A handful of holiday songs are chart perennials</h2>
         <p>
           "Jingle Bell Rock" (Bobby Helms) and "Rockin' Around the Christmas Tree" (Brenda Lee)
@@ -327,19 +298,17 @@
           Hot 100 nearly every December since Billboard changed its rules on streaming and airplay
           in the mid-2010s.
         </p>
-        <p>Counts distinct calendar years each song appears in at any chart position.</p>
+        <p>Each lit cell is a calendar year that song charted. Counts distinct calendar years each song appears in at any chart position.</p>
       </div>
-      <div class="finding__chart">
-        <p class="finding__chart-title">Songs charting across the most distinct years (top 10)</p>
-        <div class="finding__chart-canvas-wrap">
-          <canvas id="chart-recurring" role="img" aria-label="Horizontal bar chart of songs ranked by number of distinct years charted"></canvas>
-        </div>
+      <div class="finding__visual">
+        <p class="finding__visual-title">Which years each song charted (top 8, 1958–2021)</p>
+        <div class="calendar-strip" id="calendar-strip" role="img" aria-label="Grid of which years each of the top recurring songs charted, from 1958 to 2021"></div>
       </div>
     </article>
 
   </section>
 
-  <section class="methodology" aria-label="About the data">
+  <section class="methodology reveal" aria-label="About the data">
     <h2 class="section-heading"><svg class="icon icon-inline" aria-hidden="true"><use href="#icon-vinyl"/></svg>About this data</h2>
     <dl>
       <dt>Source</dt>

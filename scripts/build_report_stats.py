@@ -188,8 +188,32 @@ def main():
             "distinct_years": len(ys),
             "year_min": min(ys),
             "year_max": max(ys),
+            "years": sorted(ys),
         }
         for (song, perf), ys in top_recurring
+    ]
+
+    # --- 9. example #1 hits that debuted the furthest from the top, full chart run ---
+    # Picks the songs with the worst (highest-numbered) debut position among every
+    # song that ever reached #1, so the report can draw their actual week-by-week
+    # climb instead of just a bucketed debut-position count. Ties broken by song
+    # name for a reproducible, non-arbitrary selection.
+    no1_debut_rows = []
+    for key, rs in song_rows.items():
+        rs_sorted = sorted(rs, key=lambda r: r["date"])
+        if any(r["peak_position"] == 1 for r in rs_sorted):
+            no1_debut_rows.append((rs_sorted[0]["week_position"], key, rs_sorted))
+    no1_debut_rows.sort(key=lambda t: (-t[0], t[1][0]))
+    stats["no1_climb_examples"] = [
+        {
+            "song": song,
+            "artist": artist,
+            "debut_position": debut_pos,
+            "peak_position": min(r["peak_position"] for r in rs_sorted),
+            "weeks_on_chart": max(r["weeks_on_chart"] for r in rs_sorted),
+            "positions": [r["week_position"] for r in rs_sorted],
+        }
+        for debut_pos, (song, artist), rs_sorted in no1_debut_rows[:4]
     ]
 
     OUT_JSON.write_text(json.dumps(stats, indent=2), encoding="utf-8")

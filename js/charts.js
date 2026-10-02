@@ -44,7 +44,7 @@ function truncateLabel(label, max = 28) {
 }
 
 /** Vertical or horizontal single-series bar chart. */
-function makeBarChart(canvas, { labels, values, horizontal = false, valueLabel = "Value", suffix = "", fullLabels = null }) {
+function makeBarChart(canvas, { labels, values, horizontal = false, valueLabel = "Value", suffix = "", fullLabels = null, color = PALETTE.series1 }) {
   const displayLabels = horizontal ? labels.map((l) => truncateLabel(l)) : labels;
   return new Chart(canvas, {
     type: "bar",
@@ -54,7 +54,7 @@ function makeBarChart(canvas, { labels, values, horizontal = false, valueLabel =
         {
           label: valueLabel,
           data: values,
-          backgroundColor: PALETTE.series1,
+          backgroundColor: color,
           borderRadius: 4,
           borderSkipped: horizontal ? "left" : "bottom",
           maxBarThickness: 26,
@@ -94,8 +94,7 @@ function makeBarChart(canvas, { labels, values, horizontal = false, valueLabel =
 }
 
 /** Single or multi-series line chart (used for trend-over-decade findings). */
-function makeLineChart(canvas, { labels, series, suffix = "" }) {
-  const colors = [PALETTE.series1, PALETTE.series2];
+function makeLineChart(canvas, { labels, series, suffix = "", colors = [PALETTE.series1, PALETTE.series2] }) {
   return new Chart(canvas, {
     type: "line",
     data: {

@@ -243,70 +243,293 @@
       "artist": "Bobby Helms",
       "distinct_years": 11,
       "year_min": 1958,
-      "year_max": 2021
+      "year_max": 2021,
+      "years": [
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021
+      ]
     },
     {
       "song": "Rockin' Around The Christmas Tree",
       "artist": "Brenda Lee",
       "distinct_years": 11,
       "year_min": 1960,
-      "year_max": 2021
+      "year_max": 2021,
+      "years": [
+        1960,
+        1961,
+        1962,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021
+      ]
     },
     {
       "song": "All I Want For Christmas Is You",
       "artist": "Mariah Carey",
       "distinct_years": 11,
       "year_min": 2000,
-      "year_max": 2021
+      "year_max": 2021,
+      "years": [
+        2000,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021
+      ]
     },
     {
       "song": "White Christmas",
       "artist": "Bing Crosby",
       "distinct_years": 9,
       "year_min": 1958,
-      "year_max": 2021
+      "year_max": 2021,
+      "years": [
+        1958,
+        1959,
+        1960,
+        1961,
+        1962,
+        2018,
+        2019,
+        2020,
+        2021
+      ]
     },
     {
       "song": "The Christmas Song (Merry Christmas To You)",
       "artist": "Nat King Cole",
       "distinct_years": 9,
       "year_min": 1960,
-      "year_max": 2021
+      "year_max": 2021,
+      "years": [
+        1960,
+        1962,
+        2014,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021
+      ]
     },
     {
       "song": "Thriller",
       "artist": "Michael Jackson",
       "distinct_years": 7,
       "year_min": 1984,
-      "year_max": 2020
+      "year_max": 2020,
+      "years": [
+        1984,
+        2013,
+        2014,
+        2015,
+        2018,
+        2019,
+        2020
+      ]
     },
     {
       "song": "The Little Drummer Boy",
       "artist": "The Harry Simeone Chorale",
       "distinct_years": 5,
       "year_min": 1958,
-      "year_max": 1962
+      "year_max": 1962,
+      "years": [
+        1958,
+        1959,
+        1960,
+        1961,
+        1962
+      ]
     },
     {
       "song": "Underneath The Tree",
       "artist": "Kelly Clarkson",
       "distinct_years": 5,
       "year_min": 2013,
-      "year_max": 2021
+      "year_max": 2021,
+      "years": [
+        2013,
+        2014,
+        2019,
+        2020,
+        2021
+      ]
     },
     {
       "song": "Feliz Navidad",
       "artist": "Jose Feliciano",
       "distinct_years": 5,
       "year_min": 2017,
-      "year_max": 2021
+      "year_max": 2021,
+      "years": [
+        2017,
+        2018,
+        2019,
+        2020,
+        2021
+      ]
     },
     {
       "song": "A Holly Jolly Christmas",
       "artist": "Burl Ives",
       "distinct_years": 5,
       "year_min": 2017,
-      "year_max": 2021
+      "year_max": 2021,
+      "years": [
+        2017,
+        2018,
+        2019,
+        2020,
+        2021
+      ]
+    }
+  ],
+  "no1_climb_examples": [
+    {
+      "song": "Black And Yellow",
+      "artist": "Wiz Khalifa",
+      "debut_position": 100,
+      "peak_position": 1,
+      "weeks_on_chart": 25,
+      "positions": [
+        100,
+        64,
+        51,
+        43,
+        29,
+        29,
+        25,
+        19,
+        14,
+        11,
+        12,
+        6,
+        8,
+        7,
+        5,
+        3,
+        4,
+        1,
+        4,
+        10,
+        18,
+        26,
+        29,
+        34,
+        38
+      ]
+    },
+    {
+      "song": "Can't Help Falling In Love (From \"Sliver\")",
+      "artist": "UB40",
+      "debut_position": 100,
+      "peak_position": 1,
+      "weeks_on_chart": 29,
+      "positions": [
+        100,
+        71,
+        52,
+        37,
+        25,
+        18,
+        13,
+        7,
+        4,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        3,
+        4,
+        6,
+        6,
+        11,
+        18,
+        28,
+        32,
+        43,
+        45,
+        49
+      ]
+    },
+    {
+      "song": "Go Away Little Girl",
+      "artist": "Steve Lawrence",
+      "debut_position": 100,
+      "peak_position": 1,
+      "weeks_on_chart": 17,
+      "positions": [
+        100,
+        85,
+        54,
+        41,
+        20,
+        10,
+        7,
+        4,
+        2,
+        1,
+        1,
+        3,
+        4,
+        10,
+        14,
+        20,
+        42
+      ]
+    },
+    {
+      "song": "Kansas City",
+      "artist": "Wilbert Harrison",
+      "debut_position": 100,
+      "peak_position": 1,
+      "weeks_on_chart": 16,
+      "positions": [
+        100,
+        71,
+        24,
+        16,
+        6,
+        1,
+        1,
+        2,
+        4,
+        5,
+        5,
+        7,
+        17,
+        29,
+        44,
+        84
+      ]
     }
   ]
 }
