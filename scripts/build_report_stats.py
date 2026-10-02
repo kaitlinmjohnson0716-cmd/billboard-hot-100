@@ -219,6 +219,7 @@ def main():
             "song": song,
             "artist": artist,
             "debut_position": debut_pos,
+            "debut_year": rs_sorted[0]["year"],
             "peak_position": min(r["peak_position"] for r in rs_sorted),
             "weeks_on_chart": max(r["weeks_on_chart"] for r in rs_sorted),
             "positions": [r["week_position"] for r in rs_sorted],

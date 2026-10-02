@@ -70,51 +70,191 @@
     valueLabel: "Songs",
   });
 
-  // 2. debut position of eventual #1 hits -> four real "#100 to #1" climbs
-  (function renderClimbGrid() {
-    const container = document.getElementById("climb-grid");
+  // 2. debut position of eventual #1 hits -> one combined line chart of all four climbs
+  (function renderClimbChart() {
+    const container = document.getElementById("climb-chart");
     const examples = stats.no1_climb_examples;
+    const LINE_COLORS = ["#eb6834", "#2a78d6", "#4a3aa7", "#1baf7a"];
+    const YTICKS = [1, 20, 40, 60, 80, 100];
+    const XTICK_STEP = 5;
 
-    container.innerHTML = examples
-      .map((ex) => {
-        const n = ex.positions.length;
-        const points = ex.positions
-          .map((p, i) => `${((i / (n - 1)) * 100).toFixed(2)},${((p / 100) * 40).toFixed(2)}`)
-          .join(" ");
-        const peakIndex = ex.positions.indexOf(ex.peak_position);
-        // The SVG viewBox is exactly 100 units wide and each y maps to
-        // position/100 of its 40-unit height, so the x/y viewBox coordinates
-        // already equal the x/y percentages needed to place the HTML label
-        // overlays (debut is always the first point, so its x is 0%).
-        const peakXPct = (peakIndex / (n - 1)) * 100;
-        const peakYPct = ex.peak_position;
-        const debutYPct = ex.debut_position;
+    const VB_W = 300, VB_H = 200;
+    const PX0 = 6, PX1 = 182;
+    const LX0 = PX1 + 8; // where leader lines / labels begin
+    const PY0 = 8, PY1 = 192;
+    const maxWeeks = Math.max(...examples.map((ex) => ex.positions.length));
 
+    const x = (week) => PX0 + ((week - 1) / (maxWeeks - 1)) * (PX1 - PX0);
+    const y = (pos) => PY0 + ((pos - 1) / 99) * (PY1 - PY0);
+
+    function shortenTitle(song) {
+      return song.replace(/\s*\(From "[^"]*"\)\s*$/i, "");
+    }
+
+    const songs = examples.map((ex, i) => {
+      const positions = ex.positions;
+      const points = positions.map((p, idx) => [x(idx + 1), y(p)]);
+      const peakIndex = positions.indexOf(ex.peak_position);
+      return {
+        index: i,
+        color: LINE_COLORS[i % LINE_COLORS.length],
+        song: ex.song,
+        displaySong: shortenTitle(ex.song),
+        artist: ex.artist,
+        debutYear: ex.debut_year,
+        positions,
+        points,
+        debutPt: points[0],
+        peakPt: points[peakIndex],
+        endPt: points[points.length - 1],
+        weeksOnChart: positions.length,
+      };
+    });
+
+    // Labels are positioned at each line's raw end point first, then nudged
+    // apart below (after measuring their real, possibly-wrapped height —
+    // "Go Away Little Girl" etc. don't always fit on one line at narrow
+    // widths, so a guessed fixed gap isn't reliable).
+    const labelY = {};
+    songs.forEach((s) => { labelY[s.index] = s.endPt[1]; });
+
+    const yAxisHtml = YTICKS
+      .map((p) => `<span class="climb-chart__yaxis-tick" style="top:${((y(p) / VB_H) * 100).toFixed(2)}%">#${p}</span>`)
+      .join("");
+
+    const xTicks = [];
+    for (let w = XTICK_STEP; w < maxWeeks; w += XTICK_STEP) xTicks.push(w);
+    const xAxisHtml = xTicks
+      .map((w) => `<span class="climb-chart__xaxis-tick" style="left:${((x(w) / VB_W) * 100).toFixed(2)}%">${w}</span>`)
+      .join("");
+
+    const gridlinesSvg = YTICKS.filter((p) => p !== 1)
+      .map((p) => `<line class="climb-gridline" x1="${PX0}" x2="${PX1}" y1="${y(p).toFixed(2)}" y2="${y(p).toFixed(2)}"></line>`)
+      .join("");
+
+    const bandSvg = `<rect class="climb-band" x="${PX0}" y="${y(1).toFixed(2)}" width="${PX1 - PX0}" height="${(y(10) - y(1)).toFixed(2)}"></rect>`;
+    const dashedSvg = `<line class="climb-dashed" x1="${PX0}" x2="${PX1}" y1="${y(1).toFixed(2)}" y2="${y(1).toFixed(2)}"></line>`;
+    const finishLabelHtml = `<span class="climb-chart__finish-label" style="left:${((PX1 / VB_W) * 100).toFixed(2)}%;top:${((y(1) / VB_H) * 100).toFixed(2)}%">#1</span>`;
+
+    const linesSvg = songs
+      .map((s) => {
+        const pts = s.points.map((p) => p.join(",")).join(" ");
         return `
-          <div class="climb-card">
-            <div class="climb-card__chart">
-              <div class="climb-card__axis" aria-hidden="true"><span>#1</span><span>#100</span></div>
-              <div class="climb-card__svg-wrap">
-                <svg class="climb-card__svg" viewBox="0 0 100 40" preserveAspectRatio="none" role="img" aria-label="Weekly chart position of ${escapeHtml(ex.song)} by ${escapeHtml(ex.artist)}, climbing from number ${ex.debut_position} to number one">
-                  <polyline class="climb-card__line" points="${points}"></polyline>
-                  <circle class="climb-card__debut" cx="0" cy="${((ex.debut_position / 100) * 40).toFixed(2)}" r="2.2"></circle>
-                  <circle class="climb-card__peak" cx="${peakXPct.toFixed(2)}" cy="${((ex.peak_position / 100) * 40).toFixed(2)}" r="2.2"></circle>
-                </svg>
-                <span class="climb-card__point-label is-debut" style="left:0%;top:${debutYPct}%">#${ex.debut_position} debut</span>
-                <span class="climb-card__point-label is-peak" style="left:${peakXPct.toFixed(2)}%;top:${peakYPct}%">#1 peak</span>
-              </div>
-            </div>
-            <div class="climb-card__meta">
-              <p class="climb-card__song">${escapeHtml(ex.song)}</p>
-              <p class="climb-card__artist">${escapeHtml(ex.artist)}</p>
-              <p class="climb-card__stat">Debuted #${ex.debut_position} → #1 (${ex.weeks_on_chart} weeks on chart total)</p>
-            </div>
-          </div>`;
+          <polyline class="climb-line" data-song-index="${s.index}" style="--c:${s.color}" points="${pts}"></polyline>
+          <circle class="climb-dot is-debut" data-song-index="${s.index}" style="--c:${s.color}" cx="${s.debutPt[0].toFixed(2)}" cy="${s.debutPt[1].toFixed(2)}" r="3"></circle>
+          <circle class="climb-dot is-peak" data-song-index="${s.index}" style="--c:${s.color}" cx="${s.peakPt[0].toFixed(2)}" cy="${s.peakPt[1].toFixed(2)}" r="3.4"></circle>
+          <line class="climb-leader" data-song-index="${s.index}" style="--c:${s.color}" x1="${s.endPt[0].toFixed(2)}" y1="${s.endPt[1].toFixed(2)}" x2="${(LX0 - 3).toFixed(2)}" y2="${labelY[s.index].toFixed(2)}"></line>`;
       })
       .join("");
 
-    container.querySelectorAll(".climb-card__line").forEach((line) => {
-      line.style.setProperty("--len", line.getTotalLength());
+    const hitPathsSvg = songs
+      .map((s) => `<polyline class="climb-line-hit" data-song-index="${s.index}" points="${s.points.map((p) => p.join(",")).join(" ")}"></polyline>`)
+      .join("");
+
+    const labelsHtml = songs
+      .map((s) => `
+        <div class="climb-chart__label" data-song-index="${s.index}" style="--c:${s.color};left:${((LX0 / VB_W) * 100).toFixed(2)}%;right:4px;top:${((labelY[s.index] / VB_H) * 100).toFixed(2)}%">
+          <p class="climb-chart__label-song">${escapeHtml(s.displaySong)}</p>
+          <p class="climb-chart__label-artist">${escapeHtml(s.artist)}</p>
+        </div>`)
+      .join("");
+
+    container.innerHTML = `
+      <p class="climb-chart__title">Four songs that debuted at #100 and climbed to #1</p>
+      <div class="climb-chart__body">
+        <div class="climb-chart__yaxis" aria-hidden="true">${yAxisHtml}</div>
+        <div class="climb-chart__plot">
+          <svg class="climb-chart__svg" viewBox="0 0 ${VB_W} ${VB_H}">
+            ${bandSvg}
+            ${gridlinesSvg}
+            ${dashedSvg}
+            ${linesSvg}
+            ${hitPathsSvg}
+          </svg>
+          ${finishLabelHtml}
+          ${labelsHtml}
+          <div class="climb-chart__xaxis" aria-hidden="true">${xAxisHtml}</div>
+        </div>
+      </div>
+      <p class="climb-chart__xaxis-title">Weeks since debut</p>
+      <p class="climb-chart__caption">Debut years — ${songs.map((s) => `${escapeHtml(s.displaySong)}: ${s.debutYear}`).join(" · ")}</p>
+      <div class="climb-chart__tooltip" id="climb-chart-tooltip"></div>
+    `;
+
+    const svg = container.querySelector(".climb-chart__svg");
+    const plotEl = container.querySelector(".climb-chart__plot");
+    const tooltip = container.querySelector("#climb-chart-tooltip");
+
+    // Now that the labels are in the DOM, measure their real (possibly
+    // multi-line) rendered height and nudge overlapping ones apart using
+    // that actual height rather than a guess, then move each label's
+    // leader line to match.
+    (function declutterLabels() {
+      const plotPxHeight = plotEl.getBoundingClientRect().height;
+      if (!plotPxHeight) return;
+      const pxToVb = VB_H / plotPxHeight;
+      const buffer = 4;
+
+      const items = songs
+        .map((s) => {
+          const label = container.querySelector(`.climb-chart__label[data-song-index="${s.index}"]`);
+          return { index: s.index, label, y: labelY[s.index], h: label.offsetHeight * pxToVb };
+        })
+        .sort((a, b) => a.y - b.y);
+
+      for (let i = 1; i < items.length; i++) {
+        const minGap = (items[i - 1].h + items[i].h) / 2 + buffer;
+        if (items[i].y - items[i - 1].y < minGap) items[i].y = items[i - 1].y + minGap;
+      }
+      const overflow = items.length ? items[items.length - 1].y - PY1 : 0;
+      if (overflow > 0) {
+        items.forEach((it) => { it.y -= overflow; });
+        for (let i = items.length - 2; i >= 0; i--) {
+          const minGap = (items[i].h + items[i + 1].h) / 2 + buffer;
+          if (items[i + 1].y - items[i].y < minGap) items[i].y = items[i + 1].y - minGap;
+        }
+      }
+
+      items.forEach((it) => {
+        const finalY = Math.max(PY0, Math.min(PY1, it.y));
+        it.label.style.top = `${((finalY / VB_H) * 100).toFixed(2)}%`;
+        const leader = svg.querySelector(`.climb-leader[data-song-index="${it.index}"]`);
+        if (leader) leader.setAttribute("y2", finalY.toFixed(2));
+      });
+    })();
+
+    function setActive(idx) {
+      container.classList.toggle("has-hover", idx !== null);
+      container.querySelectorAll("[data-song-index]").forEach((el) => {
+        el.classList.toggle("is-active", idx !== null && Number(el.dataset.songIndex) === idx);
+      });
+    }
+
+    function showTooltip(e, s) {
+      const pt = svg.createSVGPoint();
+      pt.x = e.clientX;
+      pt.y = e.clientY;
+      const loc = pt.matrixTransform(svg.getScreenCTM().inverse());
+      let week = Math.round(((loc.x - PX0) / (PX1 - PX0)) * (maxWeeks - 1) + 1);
+      week = Math.max(1, Math.min(s.weeksOnChart, week));
+      const pos = s.positions[week - 1];
+      tooltip.innerHTML = `<strong>${escapeHtml(s.displaySong)}</strong><span>${escapeHtml(s.artist)}</span><span>Week ${week} · #${pos}</span>`;
+      tooltip.style.left = `${e.clientX + 14}px`;
+      tooltip.style.top = `${e.clientY + 14}px`;
+      tooltip.classList.add("is-visible");
+    }
+
+    songs.forEach((s) => {
+      const hit = svg.querySelector(`.climb-line-hit[data-song-index="${s.index}"]`);
+      const label = container.querySelector(`.climb-chart__label[data-song-index="${s.index}"]`);
+      [hit, label].forEach((el) => {
+        el.addEventListener("mouseenter", () => setActive(s.index));
+        el.addEventListener("mouseleave", () => {
+          setActive(null);
+          tooltip.classList.remove("is-visible");
+        });
+      });
+      hit.addEventListener("mousemove", (e) => showTooltip(e, s));
     });
   })();
 
@@ -280,9 +420,6 @@ function setupScrollEffects() {
   function activateReveal(el) {
     el.classList.add("is-visible");
     el.querySelectorAll(".waffle, .rank-list, .calendar-strip").forEach((c) => c.classList.add("is-visible"));
-    el.querySelectorAll(".climb-card").forEach((c, i) => {
-      setTimeout(() => c.classList.add("is-visible"), i * 130);
-    });
     const counters = el.classList.contains("count-up") ? [el] : [...el.querySelectorAll(".count-up")];
     counters.forEach(animateCount);
   }

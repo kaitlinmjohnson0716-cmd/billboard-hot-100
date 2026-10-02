@@ -509,6 +509,7 @@
       "song": "Black And Yellow",
       "artist": "Wiz Khalifa",
       "debut_position": 100,
+      "debut_year": 2010,
       "peak_position": 1,
       "weeks_on_chart": 25,
       "positions": [
@@ -543,6 +544,7 @@
       "song": "Can't Help Falling In Love (From \"Sliver\")",
       "artist": "UB40",
       "debut_position": 100,
+      "debut_year": 1993,
       "peak_position": 1,
       "weeks_on_chart": 29,
       "positions": [
@@ -581,6 +583,7 @@
       "song": "Go Away Little Girl",
       "artist": "Steve Lawrence",
       "debut_position": 100,
+      "debut_year": 1962,
       "peak_position": 1,
       "weeks_on_chart": 17,
       "positions": [
@@ -607,6 +610,7 @@
       "song": "Kansas City",
       "artist": "Wilbert Harrison",
       "debut_position": 100,
+      "debut_year": 1959,
       "peak_position": 1,
       "weeks_on_chart": 16,
       "positions": [
